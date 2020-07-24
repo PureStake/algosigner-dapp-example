@@ -25,40 +25,93 @@
     </style>
 <body>
     <div class="buttons">
-            <button id="poc_status" class="btn" disabled>AlgoSigner.query('status')</button>
-            <button id="poc_send" class="btn" disabled>AlgoSigner.sign()</button>
-            <button id="poc_connect" class="btn">AlgoSigner.connect()</button>
+            <button id="status" class="btn" disabled>AlgoSigner.algod('status')</button>
+            <button id="params" class="btn" disabled>AlgoSigner.algod('params')</button>
+            <button id="accounts" class="btn" disabled>AlgoSigner.accounts('TestNet')</button>
+            <button id="sign" class="btn" disabled>AlgoSigner.sign()</button>
+            <button id="connect" class="btn">AlgoSigner.connect()</button>
     </div>
-    <textarea id="poc_log" class="log" rows="38"></textarea>
+    <textarea id="log" class="log" rows="38"></textarea>
     <script>
         (() => {
+            let txParams = {};
+            let accounts = [];
+            let signedTx;
             let resolved_info = "[V] Promised resolved:\n";
             let catched_info = "[X] Promised caught:\n";
 
-            function send(obj){
-
-                AlgoSigner.sign(obj)
+            function sign(obj){
+                // {amount: 100,to: "6BJJ3ESASBS2UVHSEBYD6WD2HDRLYUIRPGJK2JJYZ6CMW6L3DHZYHYHWJU"}
+                let txn = {
+                  "from": accounts[0].address,
+                  "to": "PBZHOKKNBUCCDJB7KB2KLHUMWCGAMBXZKGBFGGBHYNNXFIBOYI7ONYBWK4",
+                  "fee": txParams.fee,
+                  "passphrase": "",
+                  "ledger": "TestNet",
+                  "amount": 12345,
+                  "firstRound": txParams.firstRound,
+                  "lastRound": txParams.lastRound,
+                  "genesisID": txParams.genesisID,
+                  "genesisHash": txParams.genesisHash,
+                  "note": new Uint8Array(0)
+                };
+                AlgoSigner.sign(txn)
                 .then((d) => {
-                    document.getElementById("poc_log").value += resolved_info;
-                    document.getElementById("poc_log").value += JSON.stringify(d) + "\n\n";
+                    document.getElementById("log").value += resolved_info;
+                    document.getElementById("log").value += JSON.stringify(d) + "\n\n";
                 })
                 .catch((e) => {
                     console.error(e);
-                    document.getElementById("poc_log").value += catched_info;
-                    document.getElementById("poc_log").value += JSON.stringify(e) + "\n\n";
+                    document.getElementById("log").value += catched_info;
+                    document.getElementById("log").value += JSON.stringify(e) + "\n\n";
                 });
             }
 
-            function query(obj){
-                AlgoSigner.query(obj)
+            function status(){
+                AlgoSigner.algod({
+                    ledger: 'TestNet',
+                    path: '/v2/status'
+                })
                 .then((d) => {
-                    document.getElementById("poc_log").value += resolved_info;
-                    document.getElementById("poc_log").value += JSON.stringify(d) + "\n\n";
+                    document.getElementById("log").value += resolved_info;
+                    document.getElementById("log").value += JSON.stringify(d) + "\n\n";
+                    signedTx = d;
                 })
                 .catch((e) => {
                     console.error(e);
-                    document.getElementById("poc_log").value += catched_info;
-                    document.getElementById("poc_log").value += JSON.stringify(e) + "\n\n";
+                    document.getElementById("log").value += catched_info;
+                    document.getElementById("log").value += JSON.stringify(e) + "\n\n";
+                });
+            }
+
+            function getAccounts(){
+                AlgoSigner.accounts({ledger: 'TestNet'})
+                .then((d) => {
+                    document.getElementById("log").value += resolved_info;
+                    document.getElementById("log").value += JSON.stringify(d) + "\n\n";
+                    accounts = d;
+                })
+                .catch((e) => {
+                    console.error(e);
+                    document.getElementById("log").value += catched_info;
+                    document.getElementById("log").value += JSON.stringify(e) + "\n\n";
+                });
+            }
+
+            function params(){
+                AlgoSigner.algod({
+                    ledger: 'TestNet',
+                    path: '/v2/transactions/params'
+                })
+                .then((d) => {
+                    document.getElementById("log").value += resolved_info;
+                    document.getElementById("log").value += JSON.stringify(d) + "\n\n";
+                    txParams = d;
+                })
+                .catch((e) => {
+                    console.error(e);
+                    document.getElementById("log").value += catched_info;
+                    document.getElementById("log").value += JSON.stringify(e) + "\n\n";
                 });
             }
 
@@ -70,41 +123,48 @@
 
                 AlgoSigner.connect()
                 .then((d) => {
-
-                    AlgoSigner.subscribe("heartbeat",() => {
-                        document.getElementById("poc_log").value += "[V] Heartbeat subscrition Event received.\n\n";
-                    });
-
-                    let el = document.getElementById('poc_send');
+                    let el = document.getElementById('sign');
                     el.disabled = false;
                     el.addEventListener("click",() => {
-                        send({amount: 100,to: "6BJJ3ESASBS2UVHSEBYD6WD2HDRLYUIRPGJK2JJYZ6CMW6L3DHZYHYHWJU"});
+                        sign();
                     }, false);
 
-                    el = document.getElementById('poc_status');
+                    el = document.getElementById('status');
                     el.disabled = false;
                     el.addEventListener("click",() => {
-                        query('status',{});
+                        status();
                     }, false);
 
-                    el = document.getElementById('poc_connect');
+                    el = document.getElementById('params');
+                    el.disabled = false;
+                    el.addEventListener("click",() => {
+                        params();
+                    }, false);
+
+                    el = document.getElementById('accounts');
+                    el.disabled = false;
+                    el.addEventListener("click",() => {
+                        getAccounts();
+                    }, false);
+
+                    el = document.getElementById('connect');
                     el.disabled = true;
                 })
                 .catch((e) => {
-                    let el = document.getElementById('poc_connect');
+                    let el = document.getElementById('connect');
                     el.disabled = false;
                     el.removeEventListener("click",connectListener);
                     el.addEventListener("click",connectListener, false);
                     console.error(e);
-                    document.getElementById("poc_log").value += catched_info;
-                    document.getElementById("poc_log").value += JSON.stringify(e) + "\n\n";
+                    document.getElementById("log").value += catched_info;
+                    document.getElementById("log").value += JSON.stringify(e) + "\n\n";
                 });
             }
 
             // setTimeout(() => {
             //     connect();
             // },100);
-            let el = document.getElementById('poc_connect');
+            let el = document.getElementById('connect');
             el.addEventListener("click", connect, false);
         })();
     </script>
