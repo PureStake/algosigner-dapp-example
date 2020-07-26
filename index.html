@@ -45,14 +45,13 @@
                 let txn = {
                   "from": accounts[0].address,
                   "to": "PBZHOKKNBUCCDJB7KB2KLHUMWCGAMBXZKGBFGGBHYNNXFIBOYI7ONYBWK4",
-                  "fee": txParams.fee,
-                  "passphrase": "",
+                  "fee": txParams['min-fee'],
                   "ledger": "TestNet",
                   "amount": 12345,
-                  "firstRound": txParams.firstRound,
-                  "lastRound": txParams.lastRound,
-                  "genesisID": txParams.genesisID,
-                  "genesisHash": txParams.genesisHash,
+                  "firstRound": txParams['last-round'],
+                  "lastRound": txParams['last-round'] + 1000,
+                  "genesisID": txParams['genesis-id'],
+                  "genesisHash": txParams['genesis-hash'],
                   "note": new Uint8Array(0)
                 };
                 AlgoSigner.sign(txn)
