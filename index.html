@@ -29,7 +29,7 @@
             <button id="params" class="btn" disabled>AlgoSigner.algod('params')</button>
             <button id="accounts" class="btn" disabled>AlgoSigner.accounts('TestNet')</button>
             <button id="sign" class="btn" disabled>AlgoSigner.sign()</button>
-            <button id="post" class="btn" disabled>AlgoSigner.algod('transaction', POST)</button>
+            <button id="post" class="btn" disabled>AlgoSigner.send(tx.blob)</button>
             <button id="connect" class="btn">AlgoSigner.connect()</button>
     </div>
     <textarea id="log" class="log" rows="38"></textarea>
@@ -57,6 +57,7 @@
                 };
                 AlgoSigner.sign(txn)
                 .then((d) => {
+                    console.log(d);
                     document.getElementById("log").value += resolved_info;
                     document.getElementById("log").value += JSON.stringify(d) + "\n\n";
                     signedTx = d;
@@ -70,12 +71,9 @@
 
             function postTx(){
 
-                AlgoSigner.algod({
+                AlgoSigner.send({
                     ledger: 'TestNet',
-                    path: '/v2/transactions',
-                    method: 'POST',
-                    contentType: 'application/x-binary',
-                    body: signedTx
+                    tx: signedTx.blob
                 })
                 .then((d) => {
                     document.getElementById("log").value += resolved_info;
