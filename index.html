@@ -29,6 +29,7 @@
             <button id="params" class="btn" disabled>AlgoSigner.algod('params')</button>
             <button id="accounts" class="btn" disabled>AlgoSigner.accounts('TestNet')</button>
             <button id="sign" class="btn" disabled>AlgoSigner.sign()</button>
+            <button id="post" class="btn" disabled>AlgoSigner.algod('transaction', POST)</button>
             <button id="connect" class="btn">AlgoSigner.connect()</button>
     </div>
     <textarea id="log" class="log" rows="38"></textarea>
@@ -40,7 +41,7 @@
             let resolved_info = "[V] Promised resolved:\n";
             let catched_info = "[X] Promised caught:\n";
 
-            function sign(obj){
+            function sign(){
                 // {amount: 100,to: "6BJJ3ESASBS2UVHSEBYD6WD2HDRLYUIRPGJK2JJYZ6CMW6L3DHZYHYHWJU"}
                 let txn = {
                   "from": accounts[0].address,
@@ -55,6 +56,27 @@
                   "note": new Uint8Array(0)
                 };
                 AlgoSigner.sign(txn)
+                .then((d) => {
+                    document.getElementById("log").value += resolved_info;
+                    document.getElementById("log").value += JSON.stringify(d) + "\n\n";
+                    signedTx = d;
+                })
+                .catch((e) => {
+                    console.error(e);
+                    document.getElementById("log").value += catched_info;
+                    document.getElementById("log").value += JSON.stringify(e) + "\n\n";
+                });
+            }
+
+            function postTx(){
+
+                AlgoSigner.algod({
+                    ledger: 'TestNet',
+                    path: '/v2/transactions',
+                    method: 'POST',
+                    contentType: 'application/x-binary',
+                    body: signedTx
+                })
                 .then((d) => {
                     document.getElementById("log").value += resolved_info;
                     document.getElementById("log").value += JSON.stringify(d) + "\n\n";
@@ -74,7 +96,6 @@
                 .then((d) => {
                     document.getElementById("log").value += resolved_info;
                     document.getElementById("log").value += JSON.stringify(d) + "\n\n";
-                    signedTx = d;
                 })
                 .catch((e) => {
                     console.error(e);
@@ -126,6 +147,12 @@
                     el.disabled = false;
                     el.addEventListener("click",() => {
                         sign();
+                    }, false);
+
+                    el = document.getElementById('post');
+                    el.disabled = false;
+                    el.addEventListener("click",() => {
+                        postTx();
                     }, false);
 
                     el = document.getElementById('status');
