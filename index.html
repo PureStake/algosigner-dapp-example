@@ -33,27 +33,34 @@
             <button id="connect" class="btn">AlgoSigner.connect()</button>
     </div>
     <textarea id="log" class="log" rows="38"></textarea>
+    <div class="buttons">
+            <button id="txId" class="btn" disabled>AlgoSigner.algod(pending transaction)</button>
+    </div>
+
     <script>
         (() => {
             let txParams = {};
             let accounts = [];
             let signedTx;
+            let txId = '';
             let resolved_info = "[V] Promised resolved:\n";
             let catched_info = "[X] Promised caught:\n";
 
             function sign(){
                 // {amount: 100,to: "6BJJ3ESASBS2UVHSEBYD6WD2HDRLYUIRPGJK2JJYZ6CMW6L3DHZYHYHWJU"}
+                
+                const amount = Math.floor(Math.random() * 10); 
+
                 let txn = {
-                  "from": accounts[0].address,
-                  "to": "PBZHOKKNBUCCDJB7KB2KLHUMWCGAMBXZKGBFGGBHYNNXFIBOYI7ONYBWK4",
-                  "fee": txParams['min-fee'],
-                  "ledger": "TestNet",
-                  "amount": 12345,
-                  "firstRound": txParams['last-round'],
-                  "lastRound": txParams['last-round'] + 1000,
-                  "genesisID": txParams['genesis-id'],
-                  "genesisHash": txParams['genesis-hash'],
-                  "note": new Uint8Array(0)
+                    "from": accounts[0].address,
+                    "to": "PBZHOKKNBUCCDJB7KB2KLHUMWCGAMBXZKGBFGGBHYNNXFIBOYI7ONYBWK4",
+                    "fee": txParams['min-fee'],
+                    "amount": amount,
+                    "firstRound": txParams['last-round'],
+                    "lastRound": txParams['last-round'] + 1000,
+                    "genesisID": txParams['genesis-id'],
+                    "genesisHash": txParams['genesis-hash'],
+                    "note": new Uint8Array(0)
                 };
                 AlgoSigner.sign(txn)
                 .then((d) => {
@@ -69,6 +76,23 @@
                 });
             }
 
+            function validateTx(){
+
+                AlgoSigner.algod({
+                    ledger: 'TestNet',
+                    path: '/v2/transactions/pending/' + txId.txId
+                })
+                .then((d) => {
+                    document.getElementById("log").value += resolved_info;
+                    document.getElementById("log").value += JSON.stringify(d) + "\n\n";
+                })
+                .catch((e) => {
+                    console.error(e);
+                    document.getElementById("log").value += catched_info;
+                    document.getElementById("log").value += JSON.stringify(e) + "\n\n";
+                });
+            }
+
             function postTx(){
 
                 AlgoSigner.send({
@@ -76,8 +100,10 @@
                     tx: signedTx.blob
                 })
                 .then((d) => {
+                    console.log(d)
                     document.getElementById("log").value += resolved_info;
                     document.getElementById("log").value += JSON.stringify(d) + "\n\n";
+                    txId = d;
                 })
                 .catch((e) => {
                     console.error(e);
@@ -163,6 +189,12 @@
                     el.disabled = false;
                     el.addEventListener("click",() => {
                         params();
+                    }, false);
+
+                    el = document.getElementById('txId');
+                    el.disabled = false;
+                    el.addEventListener("click",() => {
+                        validateTx();
                     }, false);
 
                     el = document.getElementById('accounts');
