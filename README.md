@@ -13,7 +13,7 @@ _The AlgoSigner project is in pre-release development, it may be necessary to re
 4. Send signed transaction to Algorand network*
 5. Allows for accessing the public methods of the Alogd and Indexer APIs
 
-* Signed transaction binary blob is encoded in base64 when returned by the extension, in addition to the standard encoding the Algorand SDK performs. No extra steps are required to send it through AlgoSigner - which expects and requires the base64 encoding of the binary blob. T 
+* Signed transaction binary blob is encoded in base64 when returned by the extension, in addition to the standard encoding the Algorand SDK performs. No extra steps are required to send it through AlgoSigner - which expects and requires the base64 encoding of the binary blob.  
 
 ### Prerequisites
 1. Chrome Browser
@@ -22,11 +22,11 @@ _The AlgoSigner project is in pre-release development, it may be necessary to re
 
 ### End to End Example Steps
 1. Open page from the link above or host it yourself* 
-2. Select 'AlgoSigner.connect()' and authorize the dApp in AlgoSigner
-3. Select 'AlgoSigner.accounts("TestNet")' - provides the dApp an array of TestNet accounts
+2. Select 'AlgoSigner.connect()' - authorize the dApp in AlgoSigner
+3. Select 'AlgoSigner.accounts("TestNet")' - provides the dApp an array of TestNet accounts from the wallet
 4. Select 'AlgoSigner.algod("params")' - populates the transaction parameters like 'first-round', 'last-round' and 'genesisID'
-5. Select 'AlgoSigner.sign()' to send a sample transction to AlgoSigner and review and approve in AlgoSigner (requires password). The dApp receives back the signed transaction object. 
-6. Select 'AlgoSigner.send(tx.blob)' - sends the signed transaction blob (in base64) - back to AlgoSigner for submission to the network
+5. Select 'AlgoSigner.sign()' - sends transaction to AlgoSigner for review and approval (requires password). The dApp gets back a signed transaction.
+6. Select 'AlgoSigner.send(tx.blob)' - dApp sends the signed transaction blob (in base64) - back to AlgoSigner for submission to the network
 7. Select 'AlgoSigner.algod('pending transaction') - verify the status of the transaction
 
 * A simple self hosted solution is to copy/clone the page locally and run `python3 -m http.server 9000` from the directory 

@@ -32,7 +32,15 @@
             <button id="post" class="btn" disabled>AlgoSigner.send(tx.blob)</button>
             <button id="connect" class="btn">AlgoSigner.connect()</button>
     </div>
-    <textarea id="log" class="log" rows="38"></textarea>
+    <textarea id="log" class="log" rows="38">
+Select 'AlgoSigner.connect()' - authorize the dApp in AlgoSigner
+Select 'AlgoSigner.accounts("TestNet")' - provides the dApp an array of TestNet accounts from the wallet
+Select 'AlgoSigner.algod("params")' - populates the transaction parameters like 'first-round', 'last-round' and 'genesisID'
+Select 'AlgoSigner.sign()' - sends transaction to AlgoSigner for review and approval (requires password). The dApp gets back a signed transaction.
+Select 'AlgoSigner.send(tx.blob)' - dApp sends the signed transaction blob (in base64) - back to AlgoSigner for submission to the network
+Select 'AlgoSigner.algod('pending transaction') - verify the status of the transaction
+
+</textarea>
     <div class="buttons">
             <button id="txId" class="btn" disabled>AlgoSigner.algod(pending transaction)</button>
     </div>
