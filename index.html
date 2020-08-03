@@ -69,7 +69,7 @@ Select 'AlgoSigner.algod('pending transaction') - verify the status of the trans
                     "lastRound": txParams['last-round'] + 1000,
                     "genesisID": txParams['genesis-id'],
                     "genesisHash": txParams['genesis-hash'],
-                    "note": new Uint8Array(0)
+                    "note": "this is a note"
                 };
                 AlgoSigner.sign(txn)
                 .then((d) => {
