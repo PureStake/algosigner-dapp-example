@@ -217,9 +217,6 @@ Select 'AlgoSigner.algod('pending transaction') - verify the status of the trans
                 })
                 .catch((e) => {
                     let el = document.getElementById('connect');
-                    el.disabled = false;
-                    el.removeEventListener("click",connectListener);
-                    el.addEventListener("click",connectListener, false);
                     console.error(e);
                     document.getElementById("log").value += catched_info;
                     document.getElementById("log").value += JSON.stringify(e) + "\n\n";
