@@ -77,6 +77,9 @@ Select 'AlgoSigner.algod('pending transaction') - verify the status of the trans
                     document.getElementById("log").value += resolved_info;
                     document.getElementById("log").value += JSON.stringify(d) + "\n\n";
                     signedTx = d;
+
+                    let blobUint8 = Uint8Array.from(atob(d.blob).split("").map(x => x.charCodeAt(0)));
+                    document.getElementById("log").value += `Blob Uint8Array: ${blobUint8}\n\n`;
                 })
                 .catch((e) => {
                     console.error(e);
