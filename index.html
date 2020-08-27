@@ -2,8 +2,14 @@
 <html>
     <style>
         body {
-            padding: 40px;
+            padding: 20px 30px;
             background-color: #e9e9e9;
+        }
+        .header {
+            margin-bottom: 10px;
+        }
+        .header>a {
+            margin-right: 10px;
         }
         .buttons {
             width:100%;
@@ -24,6 +30,10 @@
         }
     </style>
 <body>
+    <div class="header">
+        <a>Home</a>
+        <a  href="assets.html">Assets</a>
+    </div>
     <div class="buttons">
             <button id="status" class="btn" disabled>AlgoSigner.algod('status')</button>
             <button id="params" class="btn" disabled>AlgoSigner.algod('params')</button>
@@ -32,7 +42,7 @@
             <button id="post" class="btn" disabled>AlgoSigner.send(tx.blob)</button>
             <button id="connect" class="btn">AlgoSigner.connect()</button>
     </div>
-    <textarea id="log" class="log" rows="38">
+<textarea id="log" class="log" rows="38">
 Select 'AlgoSigner.connect()' - authorize the dApp in AlgoSigner
 Select 'AlgoSigner.accounts("TestNet")' - provides the dApp an array of TestNet accounts from the wallet
 Select 'AlgoSigner.algod("params")' - populates the transaction parameters like 'first-round', 'last-round' and 'genesisID'
