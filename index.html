@@ -1,247 +1,219 @@
 <!DOCTYPE html>
 <html>
-    <style>
-        body {
-            padding: 20px 30px;
-            background-color: #e9e9e9;
-        }
-        .header {
-            margin-bottom: 10px;
-        }
-        .header>a {
-            margin-right: 10px;
-        }
-        .buttons {
-            width:100%;
-            margin-bottom: 10px;
-        }
-        .buttons .btn {
-            display: inline;
-        }
-        .btn {
-            padding: 5px 10px;
-            background-color: #FFF;
-            border: 1px solid #999;
-            font-size: 18px;
-            margin-right: 10px;
-        }
-        .log {
-            font-size: 18px;width:98%;padding:1%;
-        }
-    </style>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AlgoSigner dApp</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+  <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/styles/tomorrow.min.css">
+  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/highlight.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="assets/style.css">
+</head>
 <body>
-    <div class="header">
-        <a>Home</a>
-        <a  href="assets.html">Assets</a>
-    </div>
-    <div class="buttons">
-            <button id="status" class="btn" disabled>AlgoSigner.algod('status')</button>
-            <button id="params" class="btn" disabled>AlgoSigner.algod('params')</button>
-            <button id="accounts" class="btn" disabled>AlgoSigner.accounts('TestNet')</button>
-            <button id="sign" class="btn" disabled>AlgoSigner.sign()</button>
-            <button id="post" class="btn" disabled>AlgoSigner.send(tx.blob)</button>
-            <button id="connect" class="btn">AlgoSigner.connect()</button>
-    </div>
-<textarea id="log" class="log" rows="38">
-Select 'AlgoSigner.connect()' - authorize the dApp in AlgoSigner
-Select 'AlgoSigner.accounts("TestNet")' - provides the dApp an array of TestNet accounts from the wallet
-Select 'AlgoSigner.algod("params")' - populates the transaction parameters like 'first-round', 'last-round' and 'genesisID'
-Select 'AlgoSigner.sign()' - sends transaction to AlgoSigner for review and approval (requires password). The dApp gets back a signed transaction.
-Select 'AlgoSigner.send(tx.blob)' - dApp sends the signed transaction blob (in base64) - back to AlgoSigner for submission to the network
-Select 'AlgoSigner.algod('pending transaction') - verify the status of the transaction
-
-</textarea>
-    <div class="buttons">
-            <button id="txId" class="btn" disabled>AlgoSigner.algod(pending transaction)</button>
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/"><img src="assets/logotype.png" height="28"></a>
     </div>
 
-    <script>
-        (() => {
-            let txParams = {};
-            let accounts = [];
-            let signedTx;
-            let txId = '';
-            let resolved_info = "[V] Promised resolved:\n";
-            let catched_info = "[X] Promised caught:\n";
+    <div class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item" href="/payment.html">Payment</a>
+        <a class="navbar-item" href="/asset-create.html">Asset Create</a>
+        <a class="navbar-item" href="/asset-optin.html">Asset Opt-in</a>
+      </div>
 
-            function sign(){
-                // {amount: 100,to: "6BJJ3ESASBS2UVHSEBYD6WD2HDRLYUIRPGJK2JJYZ6CMW6L3DHZYHYHWJU"}
-                
-                const amount = Math.floor(Math.random() * 10); 
+      <div class="navbar-end">
+        <a class="navbar-item" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner/blob/develop/docs/dApp-integration.md">
+          Documentation
+        </a>
+      </div>
+    </div>
+  </nav>
 
-                let txn = {
-                    "from": accounts[0].address,
-                    "to": "PBZHOKKNBUCCDJB7KB2KLHUMWCGAMBXZKGBFGGBHYNNXFIBOYI7ONYBWK4",
-                    "fee": txParams['min-fee'],
-                    "amount": amount,
-                    "type": "pay",
-                    "firstRound": txParams['last-round'],
-                    "lastRound": txParams['last-round'] + 1000,
-                    "genesisID": txParams['genesis-id'],
-                    "genesisHash": txParams['genesis-hash'],
-                    "note": "this is a note"
-                };
-                AlgoSigner.sign(txn)
-                .then((d) => {
-                    console.log(d);
-                    document.getElementById("log").value += resolved_info;
-                    document.getElementById("log").value += JSON.stringify(d) + "\n\n";
-                    signedTx = d;
 
-                    let blobUint8 = Uint8Array.from(atob(d.blob).split("").map(x => x.charCodeAt(0)));
-                    document.getElementById("log").value += `Blob Uint8Array: ${blobUint8}\n\n`;
-                })
-                .catch((e) => {
-                    console.error(e);
-                    document.getElementById("log").value += catched_info;
-                    document.getElementById("log").value += JSON.stringify(e) + "\n\n";
-                });
-            }
+  <!-- CONNECT -->
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        Connect
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#L160">
+          <span class="icon is-small">
+            <i class="fab fa-github"></i>
+          </span>
+          <span>See code on GitHub</span>
+        </a>
+      </h1>
+      <p class="subtitle">
+        Connect to AlgoSigner
+      </p>
 
-            function validateTx(){
+      <div class="columns">
+        <div class="column">
+          <button class="button is-primary is-fullwidth" id="connect">Connect</button>
+          <pre class="mt-2"><code class="JSON" id="connect-code">response</code></pre>
+        </div>
+        <div class="column">
+<pre><code class="js"><b>AlgoSigner</b>.connect()
+.then((d) => {
+  document.getElementById("connect-code").innerHTML = JSON.stringify(d);
+})
+.catch((e) => {
+  console.error(e);
+  document.getElementById("connect-code").innerHTML = JSON.stringify(e);
+});</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /CONNECT -->
 
-                AlgoSigner.algod({
-                    ledger: 'TestNet',
-                    path: '/v2/transactions/pending/' + txId.txId
-                })
-                .then((d) => {
-                    document.getElementById("log").value += resolved_info;
-                    document.getElementById("log").value += JSON.stringify(d) + "\n\n";
-                })
-                .catch((e) => {
-                    console.error(e);
-                    document.getElementById("log").value += catched_info;
-                    document.getElementById("log").value += JSON.stringify(e) + "\n\n";
-                });
-            }
+  <!-- STATUS -->
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        Status
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#L176">
+          <span class="icon is-small">
+            <i class="fab fa-github"></i>
+          </span>
+          <span>See code on GitHub</span>
+        </a>
+      </h1>
+      <p class="subtitle">
+        Query AlgoD to get TestNet status
+      </p>
 
-            function postTx(){
+      <div class="columns">
+        <div class="column">
+          <button class="button is-primary is-fullwidth" id="status">Status</button>
+          <pre class="mt-2"><code class="JSON" id="status-code">response</code></pre>
+        </div>
+        <div class="column">
+<pre><code class="js"><b>AlgoSigner</b>.algod({
+  ledger: 'TestNet',
+  path: '/v2/status'
+})
+.then((d) => {
+  document.getElementById("status-code").innerHTML = JSON.stringify(d);
+})
+.catch((e) => {
+  console.error(e);
+  document.getElementById("status-code").innerHTML = JSON.stringify(e);
+});</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /STATUS -->
 
-                AlgoSigner.send({
-                    ledger: 'TestNet',
-                    tx: signedTx.blob
-                })
-                .then((d) => {
-                    console.log(d)
-                    document.getElementById("log").value += resolved_info;
-                    document.getElementById("log").value += JSON.stringify(d) + "\n\n";
-                    txId = d;
-                })
-                .catch((e) => {
-                    console.error(e);
-                    document.getElementById("log").value += catched_info;
-                    document.getElementById("log").value += JSON.stringify(e) + "\n\n";
-                });
-            }
+  <!-- ACCOUNTS -->
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        Get TestNet Accounts
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#L195">
+          <span class="icon is-small">
+            <i class="fab fa-github"></i>
+          </span>
+          <span>See code on GitHub</span>
+        </a>
+      </h1>
+      <p class="subtitle">
+        Gets the users TestNet accounts
+      </p>
 
-            function status(){
-                AlgoSigner.algod({
-                    ledger: 'TestNet',
-                    path: '/v2/status'
-                })
-                .then((d) => {
-                    document.getElementById("log").value += resolved_info;
-                    document.getElementById("log").value += JSON.stringify(d) + "\n\n";
-                })
-                .catch((e) => {
-                    console.error(e);
-                    document.getElementById("log").value += catched_info;
-                    document.getElementById("log").value += JSON.stringify(e) + "\n\n";
-                });
-            }
+      <div class="columns">
+        <div class="column">
+          <button class="button is-primary is-fullwidth" id="accounts">Get Accounts</button>
+          <pre class="mt-2"><code id="accounts-code">response</code></pre>
+        </div>
+        <div class="column">
+<pre><code class="js"><b>AlgoSigner</b>.accounts({
+  ledger: 'TestNet'
+})
+.then((d) => {
+  document.getElementById("accounts-code").innerHTML = JSON.stringify(d);
+})
+.catch((e) => {
+  console.error(e);
+  document.getElementById("accounts-code").innerHTML = JSON.stringify(e);
+});</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /ACCOUNTS -->
 
-            function getAccounts(){
-                AlgoSigner.accounts({ledger: 'TestNet'})
-                .then((d) => {
-                    document.getElementById("log").value += resolved_info;
-                    document.getElementById("log").value += JSON.stringify(d) + "\n\n";
-                    accounts = d;
-                })
-                .catch((e) => {
-                    console.error(e);
-                    document.getElementById("log").value += catched_info;
-                    document.getElementById("log").value += JSON.stringify(e) + "\n\n";
-                });
-            }
+  <footer class="footer">
+    <div class="content has-text-centered">
+      by <a target="_blank" rel="noopener noreferrer" href="https://purestake.com">
+        <img src="assets/ps-logo.png" height="28">
+      </a>
+    </div>
+  </footer>
 
-            function params(){
-                AlgoSigner.algod({
-                    ledger: 'TestNet',
-                    path: '/v2/transactions/params'
-                })
-                .then((d) => {
-                    document.getElementById("log").value += resolved_info;
-                    document.getElementById("log").value += JSON.stringify(d) + "\n\n";
-                    txParams = d;
-                })
-                .catch((e) => {
-                    console.error(e);
-                    document.getElementById("log").value += catched_info;
-                    document.getElementById("log").value += JSON.stringify(e) + "\n\n";
-                });
-            }
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
 
-            function connectListener(ev) {
-                connect();
-            }
+    function connect() {
+      let connectCodeElem = document.getElementById("connect-code");
 
-            function connect() {
+      AlgoSigner.connect()
+      .then((d) => {
+        connectCodeElem.innerHTML = JSON.stringify(d, null, 2);
+      })
+      .catch((e) => {
+        console.error(e);
+        connectCodeElem.innerHTML = JSON.stringify(e, null, 2);
+      })
+      .finally(() => {
+        hljs.highlightBlock(connectCodeElem);
+      });
+    }
 
-                AlgoSigner.connect()
-                .then((d) => {
-                    let el = document.getElementById('sign');
-                    el.disabled = false;
-                    el.addEventListener("click",() => {
-                        sign();
-                    }, false);
+    function status(){
+      let statusCodeElem = document.getElementById("status-code");
 
-                    el = document.getElementById('post');
-                    el.disabled = false;
-                    el.addEventListener("click",() => {
-                        postTx();
-                    }, false);
+      AlgoSigner.algod({
+        ledger: 'TestNet',
+        path: '/v2/status'
+      })
+      .then((d) => {
+        statusCodeElem.innerHTML = JSON.stringify(d, null, 2);
+      })
+      .catch((e) => {
+        console.error(e);
+        statusCodeElem.innerHTML = JSON.stringify(e, null, 2);
+      })
+      .finally(() => {
+        hljs.highlightBlock(statusCodeElem);
+      });
+    }
 
-                    el = document.getElementById('status');
-                    el.disabled = false;
-                    el.addEventListener("click",() => {
-                        status();
-                    }, false);
+    function accounts(){
+      let accountsCodeElem = document.getElementById("accounts-code");
 
-                    el = document.getElementById('params');
-                    el.disabled = false;
-                    el.addEventListener("click",() => {
-                        params();
-                    }, false);
+      AlgoSigner.accounts({
+        ledger: 'TestNet'
+      })
+      .then((d) => {
+        accounts = d;
+        accountsCodeElem.innerHTML = JSON.stringify(d, null, 2);
+      })
+      .catch((e) => {
+        console.error(e);
+        accountsCodeElem.innerHTML = JSON.stringify(d, null, 2);
+      })
+      .finally(() => {
+        hljs.highlightBlock(accountsCodeElem);
+      });
+    }
 
-                    el = document.getElementById('txId');
-                    el.disabled = false;
-                    el.addEventListener("click",() => {
-                        validateTx();
-                    }, false);
-
-                    el = document.getElementById('accounts');
-                    el.disabled = false;
-                    el.addEventListener("click",() => {
-                        getAccounts();
-                    }, false);
-
-                    el = document.getElementById('connect');
-                    el.disabled = true;
-                })
-                .catch((e) => {
-                    let el = document.getElementById('connect');
-                    console.error(e);
-                    document.getElementById("log").value += catched_info;
-                    document.getElementById("log").value += JSON.stringify(e) + "\n\n";
-                });
-            }
-
-            // setTimeout(() => {
-            //     connect();
-            // },100);
-            let el = document.getElementById('connect');
-            el.addEventListener("click", connect, false);
-        })();
-    </script>
-</body>
+    document.getElementById('connect').addEventListener("click", connect);
+    document.getElementById('status').addEventListener("click", status);
+    document.getElementById('accounts').addEventListener("click", accounts);
+  </script>
+  </body>
 </html>

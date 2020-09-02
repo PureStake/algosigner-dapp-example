@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AlgoSigner dApp | Asset Create</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+  <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/styles/tomorrow.min.css">
+  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/highlight.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="assets/style.css">
+</head>
+<body>
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/"><img src="assets/logotype.png" height="28"></a>
+    </div>
+
+    <div class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item" href="/payment.html">Payment</a>
+        <a class="navbar-item"><b>Asset Create</b></a>
+        <a class="navbar-item" href="/asset-optin.html">Asset Opt-in</a>
+      </div>
+
+      <div class="navbar-end">
+        <a class="navbar-item" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner/blob/develop/docs/dApp-integration.md">
+          Documentation
+        </a>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- CONNECT -->
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        Connect
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/asset-create.html#L300">
+          <span class="icon is-small">
+            <i class="fab fa-github"></i>
+          </span>
+          <span>See code on GitHub</span>
+        </a>
+      </h1>
+      <p class="subtitle">
+        Connect to AlgoSigner
+      </p>
+
+      <div class="columns">
+        <div class="column">
+          <button class="button is-primary is-fullwidth" id="connect">Connect</button>
+          <pre class="mt-2"><code class="JSON" id="connect-code">response</code></pre>
+        </div>
+        <div class="column">
+<pre><code class="js"><b>AlgoSigner</b>.connect()
+.then((d) => {
+  ...
+})
+.catch((e) => {
+  console.error(e);
+});</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /CONNECT -->
+
+  <!-- ACCOUNTS -->
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        Get TestNet Accounts
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/asset-create.html#L316">
+          <span class="icon is-small">
+            <i class="fab fa-github"></i>
+          </span>
+          <span>See code on GitHub</span>
+        </a>
+      </h1>
+      <p class="subtitle">
+        Gets the users TestNet accounts
+      </p>
+
+      <div class="columns">
+        <div class="column">
+          <button class="button is-primary is-fullwidth" id="accounts">Get Accounts</button>
+          <pre class="mt-2"><code class="JSON" id="accounts-code">response</code></pre>
+        </div>
+        <div class="column">
+<pre><code class="js"><b>AlgoSigner</b>.accounts({
+  ledger: 'TestNet'
+})
+.then((d) => {
+  accounts = d;
+})
+.catch((e) => {
+  console.error(e);
+});</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /ACCOUNTS -->
+
+  <!-- PARAMS -->
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        Get Params
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/asset-create.html#L345">
+          <span class="icon is-small">
+            <i class="fab fa-github"></i>
+          </span>
+          <span>See code on GitHub</span>
+        </a>
+      </h1>
+      <p class="subtitle">
+        Query AlgoD to get TestNet suggested TX parameters
+      </p>
+
+      <div class="columns">
+        <div class="column">
+          <button class="button is-primary is-fullwidth" id="params">Get Params</button>
+          <pre class="mt-2"><code class="JSON" id="params-code">response</code></pre>
+        </div>
+        <div class="column">
+<pre><code class="js"><b>AlgoSigner</b>.algod({
+  ledger: 'TestNet',
+  path: '/v2/transactions/params'
+})
+.then((d) => {
+  txParams = d;
+})
+.catch((e) => {
+  console.error(e);
+});</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /PARAMS -->
+
+  <!-- SIGN -->
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        Sign Asset Config Transaction
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/asset-create.html#L365">
+          <span class="icon is-small">
+            <i class="fab fa-github"></i>
+          </span>
+          <span>See code on GitHub</span>
+        </a>
+      </h1>
+      <p class="subtitle">
+        Ask the user to sign an asset creation transaction using AlgoSigner's Sign method
+      </p>
+
+      <div class="columns">
+        <div class="column">
+          <div class="field">
+            <div class="control has-icons-left">
+              <div class="select is-fullwidth">
+                <select id="from">
+                  <option>Get accounts first</option>
+                </select>
+              </div>
+              <div class="icon is-small is-left">
+                <i class="fas fa-wallet"></i>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <p class="control has-icons-left">
+              <input class="input" id="name" placeholder="Asset name">
+              <span class="icon is-small is-left">
+                <i class="fas fa-signature"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control has-icons-left">
+              <input class="input" id="unit-name" placeholder="Unit name">
+              <span class="icon is-small is-left">
+                <i class="fas fa-signature"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control has-icons-left">
+              <input class="input" id="total" placeholder="Asset total">
+              <span class="icon is-small is-left">
+                <i class="fas fa-coins"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control has-icons-left">
+              <input class="input" id="decimals" placeholder="Decimals">
+              <span class="icon is-small is-left">
+                <i class="fas fa-coins"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control has-icons-left">
+              <input class="input" id="note" placeholder="Note">
+              <span class="icon is-small is-left">
+                <i class="fas fa-sticky-note"></i>
+              </span>
+            </p>
+          </div>
+          <button class="button is-primary is-fullwidth" id="sign">Sign</button>
+          <pre class="mt-2"><code id="sign-code">response</code></pre>
+        </div>
+
+        <div class="column">
+<pre><code class="js"><b>AlgoSigner</b>.sign({
+  "from": document.getElementById("from").value,
+  "assetName": document.getElementById("name").value,
+  "assetUnitName": document.getElementById("unit-name").value,
+  "assetTotal": +document.getElementById("total").value,
+  "assetDecimals": +document.getElementById("decimals").value,
+  "note": document.getElementById("note").value,
+  "type": "acfg",
+  "fee": txParams['min-fee'],
+  "firstRound": txParams['last-round'],
+  "lastRound": txParams['last-round'] + 1000,
+  "genesisID": txParams['genesis-id'],
+  "genesisHash": txParams['genesis-hash']
+})
+.then((d) => {
+  signedTx = d;
+})
+.catch((e) => {
+  console.error(e);
+});</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /SIGN -->
+
+  <!-- SEND -->
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        Send Signed Transaction
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/asset-create.html#L395">
+          <span class="icon is-small">
+            <i class="fab fa-github"></i>
+          </span>
+          <span>See code on GitHub</span>
+        </a>
+      </h1>
+      <p class="subtitle">
+        Send the previously signed transaction using AlgoSigner's Send method
+      </p>
+
+      <div class="columns">
+        <div class="column">
+          <button class="button is-primary is-fullwidth" id="send">Send</button>
+          <pre class="mt-2"><code class="JSON" id="send-code">response</code></pre>
+        </div>
+        <div class="column">
+<pre><code class="js"><b>AlgoSigner</b>.send({
+  ledger: 'TestNet',
+  tx: signedTx.blob
+})
+.then((d) => {
+  txId = d;
+})
+.catch((e) => {
+  console.error(e);
+});</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /SEND -->
+
+  <footer class="footer">
+    <div class="content has-text-centered">
+      by <a target="_blank" rel="noopener noreferrer" href="https://purestake.com">
+        <img src="assets/ps-logo.png" height="28">
+      </a>
+    </div>
+  </footer>
+
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
+    let txParams = {};
+    let tnAccounts = [];
+    let signedTx;
+    let txId = '';
+
+    function connect() {
+      let connectCodeElem = document.getElementById("connect-code");
+
+      AlgoSigner.connect()
+      .then((d) => {
+        connectCodeElem.innerHTML = JSON.stringify(d, null, 2);
+      })
+      .catch((e) => {
+        console.error(e);
+        connectCodeElem.innerHTML = JSON.stringify(e, null, 2);
+      })
+      .finally(() => {
+        hljs.highlightBlock(connectCodeElem);
+      });
+    }
+
+    function accounts(){
+      let accountsCodeElem = document.getElementById("accounts-code");
+
+      AlgoSigner.accounts({
+        ledger: 'TestNet'
+      })
+      .then((d) => {
+        accountsCodeElem.innerHTML = JSON.stringify(d, null, 2);
+        tnAccounts = d;
+
+        // Append accounts to account select
+        let select = document.getElementById("from");
+        select.textContent = '';
+        for (var i = d.length - 1; i >= 0; i--) {
+          let option = document.createElement("option");
+          option.text = d[i].address;
+          option.value = d[i].address;
+          select.appendChild(option);
+        }
+      })
+      .catch((e) => {
+        console.error(e);
+        accountsCodeElem.innerHTML = JSON.stringify(e, null, 2);
+      })
+      .finally(() => {
+        hljs.highlightBlock(accountsCodeElem);
+      });
+    }
+
+    function params(){
+      let paramsCodeElem = document.getElementById("params-code");
+
+      AlgoSigner.algod({
+        ledger: 'TestNet',
+        path: '/v2/transactions/params'
+      })
+      .then((d) => {
+        paramsCodeElem.innerHTML = JSON.stringify(d, null, 2);
+        txParams = d;
+      })
+      .catch((e) => {
+        console.error(e);
+        paramsCodeElem.innerHTML = JSON.stringify(e, null, 2);
+      })
+      .finally(() => {
+        hljs.highlightBlock(paramsCodeElem);
+      });
+    }
+
+    function sign(){
+      let signCodeElem = document.getElementById("sign-code");
+
+      AlgoSigner.sign({
+        "from": document.getElementById("from").value,
+        "assetName": document.getElementById("name").value,
+        "assetUnitName": document.getElementById("unit-name").value,
+        "assetTotal": +document.getElementById("total").value,
+        "assetDecimals": +document.getElementById("decimals").value,
+        "note": document.getElementById("note").value,
+        "type": "acfg",
+        "fee": txParams['min-fee'],
+        "firstRound": txParams['last-round'],
+        "lastRound": txParams['last-round'] + 1000,
+        "genesisID": txParams['genesis-id'],
+        "genesisHash": txParams['genesis-hash']
+      })
+      .then((d) => {
+        signedTx = d;
+        signCodeElem.innerHTML = JSON.stringify(d, null, 2);
+      })
+      .catch((e) => {
+        console.error(e);
+        signCodeElem.innerHTML = JSON.stringify(e, null, 2);
+      })
+      .finally(() => {
+        hljs.highlightBlock(signCodeElem);
+      });
+    }
+
+    function send(){
+      let sendCodeElem = document.getElementById("send-code");
+
+      AlgoSigner.send({
+        ledger: 'TestNet',
+        tx: signedTx.blob
+      })
+      .then((d) => {
+        sendCodeElem.innerHTML = JSON.stringify(d, null, 2);
+        txId = d;
+      })
+      .catch((e) => {
+        console.error(e);
+        sendCodeElem.innerHTML = JSON.stringify(e, null, 2);
+      })
+      .finally(() => {
+        hljs.highlightBlock(sendCodeElem);
+      });
+    }
+
+    document.getElementById('connect').addEventListener("click", connect);
+    document.getElementById('accounts').addEventListener("click", accounts);
+    document.getElementById('params').addEventListener("click", params);
+    document.getElementById('sign').addEventListener("click", sign);
+    document.getElementById('send').addEventListener("click", send);
+  </script>
+</body>
+</html>
