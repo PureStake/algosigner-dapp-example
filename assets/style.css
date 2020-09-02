@@ -1,0 +1,26 @@
+.hljs {
+  display: block;
+  overflow-x: visible;
+  padding: 0;
+  background: none;
+}
+
+.column {
+  overflow: auto;
+}
+
+footer img {
+  vertical-align: middle;
+  height: 48px;
+  margin-left: 5px;
+}
+
+button.button.is-primary {
+  background-color: #222b60;
+}
+button.button.is-primary:hover {
+  background-color: #1f2757;
+}
+button.button.is-primary:active {
+  background-color: #646A8F;
+}
