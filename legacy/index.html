@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        body {
+            padding: 40px;
+            background-color: #e9e9e9;
+        }
+        .buttons {
+            width:100%;
+            margin-bottom: 10px;
+        }
+        .buttons .btn {
+            display: inline;
+        }
+        .btn {
+            padding: 5px 10px;
+            background-color: #FFF;
+            border: 1px solid #999;
+            font-size: 18px;
+            margin-right: 10px;
+        }
+        .log {
+            font-size: 18px;width:98%;padding:1%;
+        }
+    </style>
+<body>
+    <div class="buttons">
+            <button id="status" class="btn" disabled>AlgoSigner.algod('status')</button>
+            <button id="params" class="btn" disabled>AlgoSigner.algod('params')</button>
+            <button id="accounts" class="btn" disabled>AlgoSigner.accounts('TestNet')</button>
+            <button id="sign" class="btn" disabled>AlgoSigner.sign()</button>
+            <button id="post" class="btn" disabled>AlgoSigner.send(tx.blob)</button>
+            <button id="connect" class="btn">AlgoSigner.connect()</button>
+    </div>
+    <textarea id="log" class="log" rows="38">
+Select 'AlgoSigner.connect()' - authorize the dApp in AlgoSigner
+Select 'AlgoSigner.accounts("TestNet")' - provides the dApp an array of TestNet accounts from the wallet
+Select 'AlgoSigner.algod("params")' - populates the transaction parameters like 'first-round', 'last-round' and 'genesisID'
+Select 'AlgoSigner.sign()' - sends transaction to AlgoSigner for review and approval (requires password). The dApp gets back a signed transaction.
+Select 'AlgoSigner.send(tx.blob)' - dApp sends the signed transaction blob (in base64) - back to AlgoSigner for submission to the network
+Select 'AlgoSigner.algod('pending transaction') - verify the status of the transaction
+
+</textarea>
+    <div class="buttons">
+            <button id="txId" class="btn" disabled>AlgoSigner.algod(pending transaction)</button>
+    </div>
+
+    <script>
+        (() => {
+            let txParams = {};
+            let accounts = [];
+            let signedTx;
+            let txId = '';
+            let resolved_info = "[V] Promised resolved:\n";
+            let catched_info = "[X] Promised caught:\n";
+
+            function sign(){
+                // {amount: 100,to: "6BJJ3ESASBS2UVHSEBYD6WD2HDRLYUIRPGJK2JJYZ6CMW6L3DHZYHYHWJU"}
+                
+                // const amount = 3000000000;
+                const amount = Math.floor(Math.random() * 10); 
+
+                let txn = {
+                    "from": accounts[0].address,
+                    "to": "PBZHOKKNBUCCDJB7KB2KLHUMWCGAMBXZKGBFGGBHYNNXFIBOYI7ONYBWK4",
+                    "fee": txParams['min-fee'],
+                    "amount": amount,
+                    "type": "pay",
+                    "firstRound": txParams['last-round'],
+                    "lastRound": txParams['last-round'] + 1000,
+                    "genesisID": txParams['genesis-id'],
+                    "genesisHash": txParams['genesis-hash'],
+                    "note": "this is a note"
+                };
+                AlgoSigner.sign(txn)
+                .then((d) => {
+                    console.log(d);
+                    document.getElementById("log").value += resolved_info;
+                    document.getElementById("log").value += JSON.stringify(d) + "\n\n";
+                    signedTx = d;
+
+                    let blobUint8 = Uint8Array.from(atob(d.blob).split("").map(x => x.charCodeAt(0)));
+                    document.getElementById("log").value += `Blob Uint8Array: ${blobUint8}\n\n`;
+                })
+                .catch((e) => {
+                    console.error(e);
+                    document.getElementById("log").value += catched_info;
+                    document.getElementById("log").value += JSON.stringify(e) + "\n\n";
+                });
+            }
+
+            function validateTx(){
+
+                AlgoSigner.algod({
+                    ledger: 'TestNet',
+                    path: '/v2/transactions/pending/' + txId.txId
+                })
+                .then((d) => {
+                    document.getElementById("log").value += resolved_info;
+                    document.getElementById("log").value += JSON.stringify(d) + "\n\n";
+                })
+                .catch((e) => {
+                    console.error(e);
+                    document.getElementById("log").value += catched_info;
+                    document.getElementById("log").value += JSON.stringify(e) + "\n\n";
+                });
+            }
+
+            function postTx(){
+
+                AlgoSigner.send({
+                    ledger: 'TestNet',
+                    tx: signedTx.blob
+                })
+                .then((d) => {
+                    console.log(d)
+                    document.getElementById("log").value += resolved_info;
+                    document.getElementById("log").value += JSON.stringify(d) + "\n\n";
+                    txId = d;
+                })
+                .catch((e) => {
+                    console.error(e);
+                    document.getElementById("log").value += catched_info;
+                    document.getElementById("log").value += JSON.stringify(e) + "\n\n";
+                });
+            }
+
+            function status(){
+                AlgoSigner.algod({
+                    ledger: 'TestNet',
+                    path: '/v2/status'
+                })
+                .then((d) => {
+                    document.getElementById("log").value += resolved_info;
+                    document.getElementById("log").value += JSON.stringify(d) + "\n\n";
+                })
+                .catch((e) => {
+                    console.error(e);
+                    document.getElementById("log").value += catched_info;
+                    document.getElementById("log").value += JSON.stringify(e) + "\n\n";
+                });
+            }
+
+            function getAccounts(){
+                AlgoSigner.accounts({ledger: 'TestNet'})
+                .then((d) => {
+                    document.getElementById("log").value += resolved_info;
+                    document.getElementById("log").value += JSON.stringify(d) + "\n\n";
+                    accounts = d;
+                })
+                .catch((e) => {
+                    console.error(e);
+                    document.getElementById("log").value += catched_info;
+                    document.getElementById("log").value += JSON.stringify(e) + "\n\n";
+                });
+            }
+
+            function params(){
+                AlgoSigner.algod({
+                    ledger: 'TestNet',
+                    path: '/v2/transactions/params'
+                })
+                .then((d) => {
+                    document.getElementById("log").value += resolved_info;
+                    document.getElementById("log").value += JSON.stringify(d) + "\n\n";
+                    txParams = d;
+                })
+                .catch((e) => {
+                    console.error(e);
+                    document.getElementById("log").value += catched_info;
+                    document.getElementById("log").value += JSON.stringify(e) + "\n\n";
+                });
+            }
+
+            function connectListener(ev) {
+                connect();
+            }
+
+            function connect() {
+
+                AlgoSigner.connect()
+                .then((d) => {
+                    let el = document.getElementById('sign');
+                    el.disabled = false;
+                    el.addEventListener("click",() => {
+                        sign();
+                    }, false);
+
+                    el = document.getElementById('post');
+                    el.disabled = false;
+                    el.addEventListener("click",() => {
+                        postTx();
+                    }, false);
+
+                    el = document.getElementById('status');
+                    el.disabled = false;
+                    el.addEventListener("click",() => {
+                        status();
+                    }, false);
+
+                    el = document.getElementById('params');
+                    el.disabled = false;
+                    el.addEventListener("click",() => {
+                        params();
+                    }, false);
+
+                    el = document.getElementById('txId');
+                    el.disabled = false;
+                    el.addEventListener("click",() => {
+                        validateTx();
+                    }, false);
+
+                    el = document.getElementById('accounts');
+                    el.disabled = false;
+                    el.addEventListener("click",() => {
+                        getAccounts();
+                    }, false);
+
+                    el = document.getElementById('connect');
+                    el.disabled = true;
+                })
+                .catch((e) => {
+                    let el = document.getElementById('connect');
+                    console.error(e);
+                    document.getElementById("log").value += catched_info;
+                    document.getElementById("log").value += JSON.stringify(e) + "\n\n";
+                });
+            }
+
+            // setTimeout(() => {
+            //     connect();
+            // },100);
+            let el = document.getElementById('connect');
+            el.addEventListener("click", connect, false);
+        })();
+    </script>
+</body>
+</html>
