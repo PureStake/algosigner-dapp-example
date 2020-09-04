@@ -67,6 +67,44 @@
     </div>
   </section>
   <!-- /CONNECT -->
+  
+    <!-- ACCOUNTS -->
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        Get TestNet Accounts
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#L275">
+          <span class="icon is-small">
+            <i class="fab fa-github"></i>
+          </span>
+          <span>See code on GitHub</span>
+        </a>
+      </h1>
+      <p class="subtitle">
+        Gets the users TestNet accounts
+      </p>
+
+      <div class="columns">
+        <div class="column">
+          <button class="button is-primary is-fullwidth" id="accounts">Get Accounts</button>
+          <pre class="mt-2"><code id="accounts-code">response</code></pre>
+        </div>
+        <div class="column">
+<pre><code class="js"><b>AlgoSigner</b>.accounts({
+  ledger: 'TestNet'
+})
+.then((d) => {
+  document.getElementById("accounts-code").innerHTML = JSON.stringify(d);
+})
+.catch((e) => {
+  console.error(e);
+  document.getElementById("accounts-code").innerHTML = JSON.stringify(e);
+});</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /ACCOUNTS -->
 
   <!-- STATUS -->
   <section class="section">
@@ -165,44 +203,6 @@ AlgoSigner.indexer({
   </section>
   <!-- /ASSETS -->
 
-  <!-- ACCOUNTS -->
-  <section class="section">
-    <div class="container">
-      <h1 class="title">
-        Get TestNet Accounts
-        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#L275">
-          <span class="icon is-small">
-            <i class="fab fa-github"></i>
-          </span>
-          <span>See code on GitHub</span>
-        </a>
-      </h1>
-      <p class="subtitle">
-        Gets the users TestNet accounts
-      </p>
-
-      <div class="columns">
-        <div class="column">
-          <button class="button is-primary is-fullwidth" id="accounts">Get Accounts</button>
-          <pre class="mt-2"><code id="accounts-code">response</code></pre>
-        </div>
-        <div class="column">
-<pre><code class="js"><b>AlgoSigner</b>.accounts({
-  ledger: 'TestNet'
-})
-.then((d) => {
-  document.getElementById("accounts-code").innerHTML = JSON.stringify(d);
-})
-.catch((e) => {
-  console.error(e);
-  document.getElementById("accounts-code").innerHTML = JSON.stringify(e);
-});</code></pre>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- /ACCOUNTS -->
-
   <footer class="footer">
     <div class="content has-text-centered">
       by <a target="_blank" rel="noopener noreferrer" href="https://purestake.com">
@@ -228,6 +228,25 @@ AlgoSigner.indexer({
       })
       .finally(() => {
         hljs.highlightBlock(connectCodeElem);
+      });
+    }
+    
+    function accounts(){
+      let accountsCodeElem = document.getElementById("accounts-code");
+
+      AlgoSigner.accounts({
+        ledger: 'TestNet'
+      })
+      .then((d) => {
+        accounts = d;
+        accountsCodeElem.innerHTML = JSON.stringify(d, null, 2);
+      })
+      .catch((e) => {
+        console.error(e);
+        accountsCodeElem.innerHTML = JSON.stringify(d, null, 2);
+      })
+      .finally(() => {
+        hljs.highlightBlock(accountsCodeElem);
       });
     }
 
@@ -271,30 +290,11 @@ AlgoSigner.indexer({
         hljs.highlightBlock(assetsCodeElem);
       });
     }
-
-    function accounts(){
-      let accountsCodeElem = document.getElementById("accounts-code");
-
-      AlgoSigner.accounts({
-        ledger: 'TestNet'
-      })
-      .then((d) => {
-        accounts = d;
-        accountsCodeElem.innerHTML = JSON.stringify(d, null, 2);
-      })
-      .catch((e) => {
-        console.error(e);
-        accountsCodeElem.innerHTML = JSON.stringify(d, null, 2);
-      })
-      .finally(() => {
-        hljs.highlightBlock(accountsCodeElem);
-      });
-    }
-
+    
     document.getElementById('connect').addEventListener("click", connect);
+    document.getElementById('accounts').addEventListener("click", accounts);
     document.getElementById('status').addEventListener("click", status);
     document.getElementById('assets').addEventListener("click", assets);
-    document.getElementById('accounts').addEventListener("click", accounts);
   </script>
   </body>
 </html>
