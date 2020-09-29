@@ -37,7 +37,7 @@
     <div class="container">
       <h1 class="title">
         Connect
-        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/asset-create.html#L300">
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/asset-create.html#L338">
           <span class="icon is-small">
             <i class="fab fa-github"></i>
           </span>
@@ -72,7 +72,7 @@
     <div class="container">
       <h1 class="title">
         Get TestNet Accounts
-        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/asset-create.html#L316">
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/asset-create.html#L354">
           <span class="icon is-small">
             <i class="fab fa-github"></i>
           </span>
@@ -109,7 +109,7 @@
     <div class="container">
       <h1 class="title">
         Get Params
-        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/asset-create.html#L345">
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/asset-create.html#L383">
           <span class="icon is-small">
             <i class="fab fa-github"></i>
           </span>
@@ -147,7 +147,7 @@
     <div class="container">
       <h1 class="title">
         Sign Asset Config Transaction
-        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/asset-create.html#L365">
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/asset-create.html#L403">
           <span class="icon is-small">
             <i class="fab fa-github"></i>
           </span>
@@ -248,7 +248,7 @@
     <div class="container">
       <h1 class="title">
         Send Signed Transaction
-        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/asset-create.html#L395">
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/asset-create.html#L433">
           <span class="icon is-small">
             <i class="fab fa-github"></i>
           </span>
@@ -270,7 +270,7 @@
   tx: signedTx.blob
 })
 .then((d) => {
-  txId = d;
+  tx = d;
 })
 .catch((e) => {
   console.error(e);
@@ -280,6 +280,44 @@
     </div>
   </section>
   <!-- /SEND -->
+
+  <!-- PENDING -->
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        Check pending transaction
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/asset-create.html#L453">
+          <span class="icon is-small">
+            <i class="fab fa-github"></i>
+          </span>
+          <span>See code on GitHub</span>
+        </a>
+      </h1>
+      <p class="subtitle">
+        Query the pending transaction endpoint to check the sent transaction status
+      </p>
+
+      <div class="columns">
+        <div class="column">
+          <button class="button is-primary is-fullwidth" id="pending">Send</button>
+          <pre class="mt-2"><code class="JSON" id="pending-code">response</code></pre>
+        </div>
+        <div class="column">
+<pre><code class="js"><b>AlgoSigner</b>.algod({
+  ledger: 'TestNet',
+  path: '/v2/transactions/pending/' + tx.txId
+})
+.then((d) => {
+  console.log(d);
+})
+.catch((e) => {
+  console.error(e);
+});</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /PENDING -->
 
   <footer class="footer">
     <div class="content has-text-centered">
@@ -295,7 +333,7 @@
     let txParams = {};
     let tnAccounts = [];
     let signedTx;
-    let txId = '';
+    let tx = {};
 
     function connect() {
       let connectCodeElem = document.getElementById("connect-code");
@@ -401,7 +439,7 @@
       })
       .then((d) => {
         sendCodeElem.innerHTML = JSON.stringify(d, null, 2);
-        txId = d;
+        tx = d;
       })
       .catch((e) => {
         console.error(e);
@@ -412,11 +450,28 @@
       });
     }
 
+    function pending(){
+      let pendingCodeElem = document.getElementById("pending-code");
+
+      AlgoSigner.algod({
+        ledger: 'TestNet',
+        path: '/v2/transactions/pending/' + tx.txId
+      })
+      .then((d) => {
+        pendingCodeElem.innerHTML = JSON.stringify(d, null, 2);
+      })
+      .catch((e) => {
+        console.error(e);
+        pendingCodeElem.innerHTML = JSON.stringify(e, null, 2);
+      });
+    }
+
     document.getElementById('connect').addEventListener("click", connect);
     document.getElementById('accounts').addEventListener("click", accounts);
     document.getElementById('params').addEventListener("click", params);
     document.getElementById('sign').addEventListener("click", sign);
     document.getElementById('send').addEventListener("click", send);
+    document.getElementById('pending').addEventListener("click", pending);
   </script>
 </body>
 </html>
