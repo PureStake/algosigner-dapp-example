@@ -142,6 +142,64 @@
   </section>
   <!-- /PARAMS -->
 
+  <!-- ASSETS -->
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        Get Assets from Indexer
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#272">
+          <span class="icon is-small">
+            <i class="fab fa-github"></i>
+          </span>
+          <span>See code on GitHub</span>
+        </a>
+      </h1>
+      <p class="subtitle">
+        Query Indexer to get TestNet assets
+      </p>
+
+      <div class="columns">
+        <div class="column">
+          <div class="field">
+            <p class="control has-icons-left">
+              <input class="input" id="name" placeholder="Name">
+              <span class="icon is-small is-left">
+                <i class="fas fa-signature"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control has-icons-left">
+              <input class="input" id="limit" placeholder="Limit">
+              <span class="icon is-small is-left">
+                <i class="fas fa-list"></i>
+              </span>
+            </p>
+          </div>
+          <button class="button is-primary is-fullwidth" id="assets">Assets</button>
+          <pre class="mt-2"><code class="JSON" id="assets-code">response</code></pre>
+        </div>
+        <div class="column">
+<pre><code class="js">const name = document.getElementById("name").value;
+const limit = document.getElementById("limit").value;
+
+AlgoSigner.indexer({
+  ledger: 'TestNet',
+  path: `/v2/assets?name=${name}&limit=${limit}`,
+})
+.then((d) => {
+  document.getElementById("assets-code").innerHTML = JSON.stringify(d);
+})
+.catch((e) => {
+  console.error(e);
+  document.getElementById("assets-code").innerHTML = JSON.stringify(e);
+});</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /ASSETS -->
+
   <!-- SIGN -->
   <section class="section">
     <div class="container">
@@ -337,6 +395,28 @@
       });
     }
 
+    function assets(){
+      let assetsCodeElem = document.getElementById("assets-code");
+
+      const name = document.getElementById("name").value;
+      const limit = document.getElementById("limit").value;
+
+      AlgoSigner.indexer({
+        ledger: 'TestNet',
+        path: `/v2/assets?name=${name}&limit=${limit}`,
+      })
+      .then((d) => {
+        assetsCodeElem.innerHTML = JSON.stringify(d, null, 2);
+      })
+      .catch((e) => {
+        console.error(e);
+        assetsCodeElem.innerHTML = JSON.stringify(e, null, 2);
+      })
+      .finally(() => {
+        hljs.highlightBlock(assetsCodeElem);
+      });
+    }
+
     function sign(){
       let signCodeElem = document.getElementById("sign-code");
 
@@ -389,6 +469,7 @@
     document.getElementById('connect').addEventListener("click", connect);
     document.getElementById('accounts').addEventListener("click", accounts);
     document.getElementById('params').addEventListener("click", params);
+    document.getElementById('assets').addEventListener("click", assets);
     document.getElementById('sign').addEventListener("click", sign);
     document.getElementById('send').addEventListener("click", send);
   </script>
