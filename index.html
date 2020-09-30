@@ -32,12 +32,45 @@
   </nav>
 
 
+  <!-- CHECK -->
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        Check AlgoSigner
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#L251">
+          <span class="icon is-small">
+            <i class="fab fa-github"></i>
+          </span>
+          <span>See code on GitHub</span>
+        </a>
+      </h1>
+      <p class="subtitle">
+        Check if AlgoSigner library is available
+      </p>
+
+      <div class="columns">
+        <div class="column">
+          <button class="button is-primary is-fullwidth" id="check">Check</button>
+          <pre class="mt-2"><code class="JSON" id="check-code">response</code></pre>
+        </div>
+        <div class="column">
+<pre><code class="js">if (typeof <b>AlgoSigner</b> !== 'undefined') {
+  document.getElementById("check-code").innerHTML = "AlgoSigner is installed.";
+} else {
+  document.getElementById("check-code").innerHTML = "AlgoSigner is NOT installed.";
+};</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /CHECK -->
+
   <!-- CONNECT -->
   <section class="section">
     <div class="container">
       <h1 class="title">
         Connect
-        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#L218">
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#L261">
           <span class="icon is-small">
             <i class="fab fa-github"></i>
           </span>
@@ -73,7 +106,7 @@
     <div class="container">
       <h1 class="title">
         Get TestNet Accounts
-        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#L234">
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#L277">
           <span class="icon is-small">
             <i class="fab fa-github"></i>
           </span>
@@ -111,7 +144,7 @@
     <div class="container">
       <h1 class="title">
         Status
-        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#L253">
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#L296">
           <span class="icon is-small">
             <i class="fab fa-github"></i>
           </span>
@@ -150,7 +183,7 @@
     <div class="container">
       <h1 class="title">
         Get Assets from Indexer
-        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#272">
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#315">
           <span class="icon is-small">
             <i class="fab fa-github"></i>
           </span>
@@ -214,6 +247,16 @@ AlgoSigner.indexer({
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   <script>
     hljs.initHighlightingOnLoad();
+
+    function check() {
+      let checkCodeElem = document.getElementById("check-code");
+
+      if (typeof AlgoSigner !== 'undefined') {
+        checkCodeElem.innerHTML = "AlgoSigner is installed.";
+      } else {
+        checkCodeElem.innerHTML = "AlgoSigner is NOT installed.";
+      }
+    }
 
     function connect() {
       let connectCodeElem = document.getElementById("connect-code");
@@ -291,6 +334,7 @@ AlgoSigner.indexer({
       });
     }
     
+    document.getElementById('check').addEventListener("click", check);
     document.getElementById('connect').addEventListener("click", connect);
     document.getElementById('accounts').addEventListener("click", accounts);
     document.getElementById('status').addEventListener("click", status);
