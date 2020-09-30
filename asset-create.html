@@ -463,6 +463,9 @@
       .catch((e) => {
         console.error(e);
         pendingCodeElem.innerHTML = JSON.stringify(e, null, 2);
+      })
+      .finally(() => {
+        hljs.highlightBlock(pendingCodeElem);
       });
     }
 
