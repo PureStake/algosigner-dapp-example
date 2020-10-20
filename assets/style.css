@@ -24,3 +24,8 @@ button.button.is-primary:hover {
 button.button.is-primary:active {
   background-color: #646A8F;
 }
+
+.navbar-item {
+  font-size: 1.25em;
+  font-weight: 600;
+}
