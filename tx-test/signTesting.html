@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <title>Algosigner - Sign Testing</title>   
+    <head>
+        <link rel="stylesheet" href="signTesting.css">
+    </head>
+    <body>
+        <div class="heading">
+            <h1 class="maintitle">Algosigner - Sign Testing</h1>   
+            <div class="override-default-tx">
+                <input type="checkbox" id="usetxdefaults" name="usetxdefaults" checked="checked">
+                <label for="usetxdefaults">Use Default Tx</label>
+            </div>
+        </div>
+        <div class="buttons">
+                <button id="payTx" class="btn">Pay</button>
+                <span class="separator"></span>
+                
+                <button id="applTx" class="btn">Application</button>
+                <span class="separator"></span>
+
+                <button id="acceptTx" class="btn">Accept</button>
+                <button id="axferTx" class="btn">Transfer</button>           
+                <span class="separator"></span>
+
+                <button id="acfgModifyTx" class="btn">Config</button>
+                <button id="acfgCreateTx" class="btn">Create</button>
+                <button id="acfgDestroyTx" class="btn">Destroy</button>
+                <span class="separator"></span>
+
+                <button id="clawbackTx" class="btn">Clawback</button>
+                <button id="afrzTx" class="btn">Freeze</button>
+        </div>
+        <div id="log-container" class="log-container"></div>
+
+        <script src="./common/setup.js"></script>
+        <script src="./common/log.js"></script>
+        <script src="./common/sign.js"></script>
+
+        <script src="./types/acfg.js"></script>
+        <script src="./types/afrz.js"></script>
+        <script src="./types/appl.js"></script>
+        <script src="./types/axfer.js"></script>
+        <script src="./types/pay.js"></script>
+
+        <script src="signTesting.js"></script>
+    </body>
+</html>
