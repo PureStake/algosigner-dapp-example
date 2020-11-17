@@ -1,12 +1,14 @@
 var highlights = {
  'good': 'hlt-good',
  'bad': 'hlt-bad',
+ 'extra': 'hlt-extra',
  'default': 'hlt-default'
 }
 function applyHighlights(text,sentiment) {
     return `<span class="${highlights[sentiment] || 'hlt-default'}">${text}</span>`;
 }
-function selfLog(stringValue, sentiment='default'){
+function selfLog(value, sentiment='default'){
+    const stringValue = value.toString() !== '[object Object]' ? value : JSON.stringify(value);
     if(!logContainer){
         logContainer = document.getElementById("log-container");
     }

@@ -17,6 +17,6 @@ async function freezeAsset(){
         selfLog(`Prepared Freeze Tx: ${JSON.stringify(txn)}`);
         await sign(txn);
     }).catch((e) => {
-        selfLog(JSON.stringify(e),'bad');
+        selfLog(e,'bad');
     });
 }

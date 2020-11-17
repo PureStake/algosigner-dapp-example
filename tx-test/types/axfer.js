@@ -17,7 +17,7 @@ async function acceptAsset(){
         selfLog(`Prepared Accept Tx: ${JSON.stringify(txn)}`);
         await sign(txn);
     }).catch((e) => {
-        selfLog(JSON.stringify(e),'bad');
+        selfLog(e,'bad');
     })
 }
 
@@ -40,7 +40,7 @@ async function transferAsset(){
         selfLog(`Prepared Transfer Tx: ${JSON.stringify(txn)}`);
         await sign(txn);
     }).catch((e) => {
-        selfLog(JSON.stringify(e),'bad');
+        selfLog(e,'bad');
     });
 }
 
@@ -64,6 +64,6 @@ async function clawbackAsset(){
         selfLog(`Prepared Clawback Tx: ${JSON.stringify(txn)}`);
         await sign(txn);
     }).catch((e) => {
-        selfLog(JSON.stringify(e),'bad');
+        selfLog(e,'bad');
     });
 }

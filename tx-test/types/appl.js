@@ -15,6 +15,6 @@ async function makeApplication(){
         selfLog(`Prepared Application Tx: ${JSON.stringify(txn)}`);
         await sign(txn);
     }).catch((e) => {
-        selfLog(JSON.stringify(e),'bad');
+        selfLog(e,'bad');
     });
 }

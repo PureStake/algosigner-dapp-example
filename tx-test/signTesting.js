@@ -1,4 +1,5 @@
 function useTxDefaults () { return document.getElementById('usetxdefaults').checked; };
+function sendSignedTx () { return document.getElementById('sendsignedtx').checked; };
 
 let payTx = document.getElementById('payTx');
 payTx.addEventListener("click", createPayTx, false);
@@ -27,3 +28,5 @@ acfgDestroyTx.addEventListener("click", destroyAsset, false);
 let afrzTx = document.getElementById('afrzTx');
 afrzTx.addEventListener("click", freezeAsset, false);
 
+let groupTx = document.getElementById('groupTx');
+groupTx.addEventListener("click", createGroupPayTx, false);
