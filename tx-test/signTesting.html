@@ -10,10 +10,14 @@
             <div class="override-default-tx">
                 <input type="checkbox" id="usetxdefaults" name="usetxdefaults" checked="checked">
                 <label for="usetxdefaults">Use Default Tx</label>
+                <span class="separator"></span>
+                <input type="checkbox" id="sendsignedtx" name="sendsignedtx">
+                <label for="usetxdefaults">Send Transaction</label>
             </div>
         </div>
         <div class="buttons">
                 <button id="payTx" class="btn">Pay</button>
+                <button id="groupTx" class="btn">Group</button>
                 <span class="separator"></span>
                 
                 <button id="applTx" class="btn">Application</button>
@@ -29,9 +33,10 @@
                 <span class="separator"></span>
 
                 <button id="clawbackTx" class="btn">Clawback</button>
-                <button id="afrzTx" class="btn">Freeze</button>
+                <button id="afrzTx" class="btn">Freeze</button>             
         </div>
         <div id="log-container" class="log-container"></div>
+        <script src="./algosdk.min.js"></script>
 
         <script src="./common/setup.js"></script>
         <script src="./common/log.js"></script>
@@ -42,6 +47,7 @@
         <script src="./types/appl.js"></script>
         <script src="./types/axfer.js"></script>
         <script src="./types/pay.js"></script>
+        <script src="./types/group.js"></script>
 
         <script src="signTesting.js"></script>
     </body>

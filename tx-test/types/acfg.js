@@ -68,6 +68,6 @@ async function destroyAsset(){
         await sign(txn);
     })
     .catch((e) => {
-        selfLog(JSON.stringify(e),'bad');
+        selfLog(e,'bad');
     });
 }

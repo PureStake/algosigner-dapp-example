@@ -19,28 +19,34 @@ body {
     width:100%;
     margin-bottom: 10px;
 }
+.separator {
+    padding: 0px;
+    margin-left: 1px;
+    margin-right: 3px;
+    border-left: 2px solid #f6fff5;
+}
 .btn {
     display: inline-block;
-    padding: 5px 10px;
+    padding: 3px 3px;
     background-color: #ddd;
     border: 2px solid #000;
-    font-size: 18px;
-    margin: 5px;
-    width: 140px;
+    font-size: 16px;
+    margin: 3px;
+    width: 130px;
     height: 40px;
     text-align: center;
 }
 .btn:hover {
     background-color: #f6fff5;
 }
-.separator {
-    border-left: 2px solid #f6fff5;
-}
 .hlt-good {
     color: #9acd32;
 }
 .hlt-bad {
     color: #cd5c5c;
+}
+.hlt-extra {
+    color: #bb88bb;
 }
 .hlt-default {
     color: #d7d7d7;
