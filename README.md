@@ -18,7 +18,7 @@ Demonstrates several standard scenarios:
 
 ### Prerequisites
 1. Chrome Browser
-2. Install of AlgoSigner - <a href="https://chrome.google.com/webstore/search/algosigner" target="_blank" rel="noopener noreferrer">Chrome Store</a>
+2. Install of AlgoSigner - <a href="https://chrome.google.com/webstore/detail/algosigner/kmmolakhbgdlpkjkcjkebenjheonagdm" target="_blank" rel="noopener noreferrer">Chrome Store</a>
 3. Imported or Created TestNet Wallet in AlgoSigner - dApp example uses the first returned
 4. Visit the dApp <a href="https://purestake.github.io/algosigner-dapp-example/" target="_blank" rel="noopener noreferrer">live</a> or host it yourself.*
 
