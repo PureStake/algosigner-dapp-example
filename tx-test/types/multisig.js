@@ -7,7 +7,23 @@ function _toJsonReplace(key, value) {
 
     // Check for uint8 arrays to get buffer for print
     if(value instanceof Uint8Array || (typeof(value)==='object' && value instanceof Array && value.length > 0 && typeof(value[0]) === 'number')){
-        return btoa(String.fromCharCode.apply(null, value));
+        let wasUpdated = false;
+        try {
+            let newvalue = algosdk.encodeAddress(value);
+            if(algosdk.isValidAddress(newvalue)){
+                value = newvalue;
+                wasUpdated = true;
+            }
+        }
+        catch(e){
+            // Ignore as this error since it is just display related and a forced decode and fallback to a normal base64 to ascii         
+        }
+
+        if(!wasUpdated){
+            value = btoa(String.fromCharCode.apply(null, value));
+        }
+
+        return value;
     }
 
     // Check for literal string match on object type to cycle further into the recursive replace
@@ -20,6 +36,8 @@ function _toJsonReplace(key, value) {
 }
 
 async function algosignAppendAlgosdk(ms){
+    const _APPEND_MERGE_WITH_ALGOSIGNER = true;
+
     let amount = (Math.floor(Math.random() * 1000) + 1);
     
     // This is to demonstrate that the post mulstig image (v,thr,subsig) is accepted in AlgoSigner
@@ -57,22 +75,40 @@ async function algosignAppendAlgosdk(ms){
     var signedStep1,signedStep2;
     await signMultisig(mstx,(d)=>{signedStep1 = d;});
 
-    var from64bit = new Uint8Array(atob(signedStep1.blob).split("").map(x => x.charCodeAt(0)));
+    var from64bit_T1 = new Uint8Array(atob(signedStep1.blob).split("").map(x => x.charCodeAt(0)));
+    selfLog(`Transaction 1:\n${JSON.stringify(algosdk.decodeObj(from64bit_T1),_toJsonReplace,0)}`,'extra');
+
     let account2_sk = algosdk.mnemonicToSecretKey(ms.account2.mno).sk; 
     let preimg = {
         version: msig.v,
         threshold: msig.thr,
         addrs: ms.mparams.addrs
     };
-    signedStep2 = await algosdk.appendSignMultisigTransaction(from64bit, preimg, account2_sk); 
-    selfLog(`Transaction 2 appended:\n${signedStep2.blob}`);
-    
+
+    let returnBlob;
+    if(_APPEND_MERGE_WITH_ALGOSIGNER) {
+        let newmsig = JSON.stringify(algosdk.decodeObj(from64bit_T1).msig,_toJsonReplace,0);
+        selfLog(`Newmsig:\n${newmsig}`, 'extra')
+
+        mstx.msig = JSON.parse(newmsig);
+        await signMultisig(mstx,(d)=>{signedStep2 = d;});
+
+        let from64bit_T2 = new Uint8Array(atob(signedStep2.blob).split("").map(x => x.charCodeAt(0)));
+        selfLog(`Transaction 2:\n${JSON.stringify(algosdk.decodeObj(from64bit_T2),_toJsonReplace,0)}`,'extra');
+
+        returnBlob = algosdk.mergeMultisigTransactions([from64bit_T1, from64bit_T2])
+    }
+    else {
+        signedStep2 = await algosdk.appendSignMultisigTransaction(from64bit_T1, preimg, account2_sk); 
+        selfLog(`Transaction 2 appended:\n${JSON.stringify(algosdk.decodeObj(signedStep2.blob),_toJsonReplace,0)}`,'extra');
+        returnBlob = signedStep2.blob;
+    } 
+
     // If we rejected a sign then just return.
     if(!(signedStep1 && signedStep2)){
         return;
     }
-
-    return btoa(String.fromCharCode.apply(null, signedStep2.blob));
+    return btoa(String.fromCharCode.apply(null, returnBlob));
 }
 
 async function algosdkMergeAlgoSigner(ms){
@@ -103,7 +139,7 @@ async function algosdkMergeAlgoSigner(ms){
     };
 
     signedStep1 = await algosdk.signMultisigTransaction(new algosdk.Transaction({...mstx.txn}), preimg, account3_sk); 
-    selfLog(`Transaction 1:\n${signedStep1.blob}`);
+    selfLog(`Transaction 1:\n${JSON.stringify(algosdk.decodeObj(signedStep1.blob),_toJsonReplace,0)}`,'extra');
 
     await signMultisig(mstx,(d)=>{signedStep2 = d;});
 
@@ -114,7 +150,7 @@ async function algosdkMergeAlgoSigner(ms){
     var from64bit = new Uint8Array(atob(signedStep2.blob).split("").map(x => x.charCodeAt(0)));
     let merged = algosdk.mergeMultisigTransactions([signedStep1.blob, from64bit])
 
-    selfLog(`Merged:\n${merged}`);
+    selfLog(`Merged:\n${JSON.stringify(algosdk.decodeObj(merged),_toJsonReplace,0)}`,'extra');
     return btoa(String.fromCharCode.apply(null, merged));
 }
 
@@ -164,11 +200,6 @@ async function createMultisigTx() {
         else {
             // This weill demonstrate multiple AlgoSigner signs being merged via the sdk
             signedBlob = await algosdkMergeAlgoSigner(ms);
-        }
-
-        if(_EXTRA_LOGGING) {
-            selfLog(`Signed blob retrieved:\n${signedBlob}`,'extra');
-            selfLog(`Decoded:\n${JSON.stringify(algosdk.decodeObj(new Uint8Array(atob(signedBlob).split("").map(x => x.charCodeAt(0)))),_toJsonReplace,0)}`,'extra');
         }
 
         // Use AlgoSigner to send this multisig, fully signed transaction to the Algorand test network
