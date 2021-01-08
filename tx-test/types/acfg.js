@@ -4,7 +4,7 @@ async function createAsset(){
         let txn = {
             type: 'acfg',
             from: account.address,
-            fee: txParams['min-fee'],
+            fee: txParams['fee'],
             firstRound: txParams['last-round'],
             lastRound: txParams['last-round'] + 1000,
             genesisID: txParams['genesis-id'],
@@ -33,7 +33,7 @@ async function modifyAsset(){
         let txn = {
             type: 'acfg',
             from: account.address,
-            fee: txParams['min-fee'],
+            fee: txParams['fee'],
             firstRound: txParams['last-round'],
             lastRound: txParams['last-round'] + 1000,
             genesisID: txParams['genesis-id'],
@@ -56,7 +56,7 @@ async function destroyAsset(){
         let txn = {
             type: 'acfg',
             from: account.address,
-            fee: txParams['min-fee'],
+            fee: txParams['fee'],
             firstRound: txParams['last-round'],
             lastRound: txParams['last-round'] + 1000,
             genesisID: txParams['genesis-id'],

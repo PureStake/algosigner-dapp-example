@@ -6,7 +6,7 @@ async function createPayTx(){
             type: 'pay',
             from: account.address,
             to: "PBZHOKKNBUCCDJB7KB2KLHUMWCGAMBXZKGBFGGBHYNNXFIBOYI7ONYBWK4",
-            fee: txParams['min-fee'], 
+            fee: txParams['fee'], 
             firstRound: txParams['last-round'],
             lastRound: txParams['last-round'] + 1000,
             genesisID: txParams['genesis-id'],
