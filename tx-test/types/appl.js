@@ -4,7 +4,7 @@ async function makeApplication(){
         let txn = {
             type: 'appl',
             from: account.address,
-            fee: txParams['min-fee'],
+            fee: txParams['fee'],
             firstRound: txParams['last-round'],
             lastRound: txParams['last-round'] + 1000,
             genesisID: txParams['genesis-id'],

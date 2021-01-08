@@ -4,7 +4,7 @@ async function freezeAsset(){
         let txn = {
             type: 'afrz',
             from: account.address,
-            fee: txParams['min-fee'],
+            fee: txParams['fee'],
             firstRound: txParams['last-round'],
             lastRound: txParams['last-round'] + 1000,
             genesisID: txParams['genesis-id'],
