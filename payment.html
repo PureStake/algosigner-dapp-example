@@ -182,7 +182,7 @@
           </div>
           <div class="field">
             <p class="control has-icons-left">
-              <input class="input" id="amount" placeholder="mAlgos">
+              <input class="input" id="amount" placeholder="&#181;Algos">
               <span class="icon is-small is-left">
                 <i class="fas fa-coins"></i>
               </span>
@@ -202,16 +202,16 @@
 
         <div class="column">
 <pre><code class="js"><b>AlgoSigner</b>.sign({
-  "from": document.getElementById("from").value,
-  "to": document.getElementById("to").value,
-  "amount": +document.getElementById("amount").value,
-  "note": document.getElementById("note").value,
-  "type": "pay",
-  "fee": txParams['min-fee'],
-  "firstRound": txParams['last-round'],
-  "lastRound": txParams['last-round'] + 1000,
-  "genesisID": txParams['genesis-id'],
-  "genesisHash": txParams['genesis-hash']
+  from: document.getElementById('from').value,
+  to: document.getElementById('to').value,
+  amount: +document.getElementById('amount').value,
+  note: document.getElementById('note').value,
+  type: 'pay',
+  fee: txParams['min-fee'],
+  firstRound: txParams['last-round'],
+  lastRound: txParams['last-round'] + 1000,
+  genesisID: txParams['genesis-id'],
+  genesisHash: txParams['genesis-hash']
 })
 .then((d) => {
   signedTx = d;
@@ -318,7 +318,7 @@
     let tx = {};
 
     function connect() {
-      let connectCodeElem = document.getElementById("connect-code");
+      let connectCodeElem = document.getElementById('connect-code');
 
       AlgoSigner.connect()
       .then((d) => {
@@ -334,7 +334,7 @@
     }
 
     function accounts(){
-      let accountsCodeElem = document.getElementById("accounts-code");
+      let accountsCodeElem = document.getElementById('accounts-code');
 
       AlgoSigner.accounts({
         ledger: 'TestNet'
@@ -344,10 +344,10 @@
         tnAccounts = d;
 
         // Append accounts to account select
-        let select = document.getElementById("from");
+        let select = document.getElementById('from');
         select.textContent = '';
         for (var i = d.length - 1; i >= 0; i--) {
-          let option = document.createElement("option");
+          let option = document.createElement('option');
           option.text = d[i].address;
           option.value = d[i].address;
           select.appendChild(option);
@@ -363,7 +363,7 @@
     }
 
     function params(){
-      let paramsCodeElem = document.getElementById("params-code");
+      let paramsCodeElem = document.getElementById('params-code');
 
       AlgoSigner.algod({
         ledger: 'TestNet',
@@ -383,19 +383,19 @@
     }
 
     function sign(){
-      let signCodeElem = document.getElementById("sign-code");
+      let signCodeElem = document.getElementById('sign-code');
 
       AlgoSigner.sign({
-        "from": document.getElementById("from").value,
-        "to": document.getElementById("to").value,
-        "amount": +document.getElementById("amount").value,
-        "note": document.getElementById("note").value,
-        "type": "pay",
-        "fee": txParams['min-fee'],
-        "firstRound": txParams['last-round'],
-        "lastRound": txParams['last-round'] + 1000,
-        "genesisID": txParams['genesis-id'],
-        "genesisHash": txParams['genesis-hash']
+        from: document.getElementById('from').value,
+        to: document.getElementById('to').value,
+        amount: +document.getElementById('amount').value,
+        note: document.getElementById('note').value,
+        type: 'pay',
+        fee: txParams['min-fee'],
+        firstRound: txParams['last-round'],
+        lastRound: txParams['last-round'] + 1000,
+        genesisID: txParams['genesis-id'],
+        genesisHash: txParams['genesis-hash']
       })
       .then((d) => {
         signedTx = d;
@@ -411,7 +411,7 @@
     }
 
     function send(){
-      let sendCodeElem = document.getElementById("send-code");
+      let sendCodeElem = document.getElementById('send-code');
 
       AlgoSigner.send({
         ledger: 'TestNet',
@@ -431,7 +431,7 @@
     }
 
     function pending(){
-      let pendingCodeElem = document.getElementById("pending-code");
+      let pendingCodeElem = document.getElementById('pending-code');
 
       AlgoSigner.algod({
         ledger: 'TestNet',
@@ -449,12 +449,12 @@
       });
     }
 
-    document.getElementById('connect').addEventListener("click", connect);
-    document.getElementById('accounts').addEventListener("click", accounts);
-    document.getElementById('params').addEventListener("click", params);
-    document.getElementById('sign').addEventListener("click", sign);
-    document.getElementById('send').addEventListener("click", send);
-    document.getElementById('pending').addEventListener("click", pending);
+    document.getElementById('connect').addEventListener('click', connect);
+    document.getElementById('accounts').addEventListener('click', accounts);
+    document.getElementById('params').addEventListener('click', params);
+    document.getElementById('sign').addEventListener('click', sign);
+    document.getElementById('send').addEventListener('click', send);
+    document.getElementById('pending').addEventListener('click', pending);
   </script>
 </body>
 </html>

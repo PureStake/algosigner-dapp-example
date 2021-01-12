@@ -55,9 +55,9 @@
         </div>
         <div class="column">
 <pre><code class="js">if (typeof <b>AlgoSigner</b> !== 'undefined') {
-  document.getElementById("check-code").innerHTML = "AlgoSigner is installed.";
+  document.getElementById('check-code').innerHTML = 'AlgoSigner is installed.';
 } else {
-  document.getElementById("check-code").innerHTML = "AlgoSigner is NOT installed.";
+  document.getElementById('check-code').innerHTML = 'AlgoSigner is NOT installed.';
 };</code></pre>
         </div>
       </div>
@@ -89,11 +89,11 @@
         <div class="column">
 <pre><code class="js"><b>AlgoSigner</b>.connect()
 .then((d) => {
-  document.getElementById("connect-code").innerHTML = JSON.stringify(d);
+  document.getElementById('connect-code').innerHTML = JSON.stringify(d);
 })
 .catch((e) => {
   console.error(e);
-  document.getElementById("connect-code").innerHTML = JSON.stringify(e);
+  document.getElementById('connect-code').innerHTML = JSON.stringify(e);
 });</code></pre>
         </div>
       </div>
@@ -127,11 +127,11 @@
   ledger: 'TestNet'
 })
 .then((d) => {
-  document.getElementById("accounts-code").innerHTML = JSON.stringify(d);
+  document.getElementById('accounts-code').innerHTML = JSON.stringify(d);
 })
 .catch((e) => {
   console.error(e);
-  document.getElementById("accounts-code").innerHTML = JSON.stringify(e);
+  document.getElementById('accounts-code').innerHTML = JSON.stringify(e);
 });</code></pre>
         </div>
       </div>
@@ -166,11 +166,11 @@
   path: '/v2/status'
 })
 .then((d) => {
-  document.getElementById("status-code").innerHTML = JSON.stringify(d);
+  document.getElementById('status-code').innerHTML = JSON.stringify(d);
 })
 .catch((e) => {
   console.error(e);
-  document.getElementById("status-code").innerHTML = JSON.stringify(e);
+  document.getElementById('status-code').innerHTML = JSON.stringify(e);
 });</code></pre>
         </div>
       </div>
@@ -216,19 +216,19 @@
           <pre class="mt-2"><code class="JSON" id="assets-code">response</code></pre>
         </div>
         <div class="column">
-<pre><code class="js">const name = document.getElementById("name").value;
-const limit = document.getElementById("limit").value;
+<pre><code class="js">const name = document.getElementById('name').value;
+const limit = document.getElementById('limit').value;
 
 AlgoSigner.indexer({
   ledger: 'TestNet',
   path: `/v2/assets?name=${name}&limit=${limit}`,
 })
 .then((d) => {
-  document.getElementById("assets-code").innerHTML = JSON.stringify(d);
+  document.getElementById('assets-code').innerHTML = JSON.stringify(d);
 })
 .catch((e) => {
   console.error(e);
-  document.getElementById("assets-code").innerHTML = JSON.stringify(e);
+  document.getElementById('assets-code').innerHTML = JSON.stringify(e);
 });</code></pre>
         </div>
       </div>
@@ -249,17 +249,17 @@ AlgoSigner.indexer({
     hljs.initHighlightingOnLoad();
 
     function check() {
-      let checkCodeElem = document.getElementById("check-code");
+      let checkCodeElem = document.getElementById('check-code');
 
       if (typeof AlgoSigner !== 'undefined') {
-        checkCodeElem.innerHTML = "AlgoSigner is installed.";
+        checkCodeElem.innerHTML = 'AlgoSigner is installed.';
       } else {
-        checkCodeElem.innerHTML = "AlgoSigner is NOT installed.";
+        checkCodeElem.innerHTML = 'AlgoSigner is NOT installed.';
       }
     }
 
     function connect() {
-      let connectCodeElem = document.getElementById("connect-code");
+      let connectCodeElem = document.getElementById('connect-code');
 
       AlgoSigner.connect()
       .then((d) => {
@@ -275,7 +275,7 @@ AlgoSigner.indexer({
     }
     
     function accounts(){
-      let accountsCodeElem = document.getElementById("accounts-code");
+      let accountsCodeElem = document.getElementById('accounts-code');
 
       AlgoSigner.accounts({
         ledger: 'TestNet'
@@ -294,7 +294,7 @@ AlgoSigner.indexer({
     }
 
     function status(){
-      let statusCodeElem = document.getElementById("status-code");
+      let statusCodeElem = document.getElementById('status-code');
 
       AlgoSigner.algod({
         ledger: 'TestNet',
@@ -313,10 +313,10 @@ AlgoSigner.indexer({
     }
 
     function assets(){
-      let assetsCodeElem = document.getElementById("assets-code");
+      let assetsCodeElem = document.getElementById('assets-code');
 
-      const name = document.getElementById("name").value;
-      const limit = document.getElementById("limit").value;
+      const name = document.getElementById('name').value;
+      const limit = document.getElementById('limit').value;
 
       AlgoSigner.indexer({
         ledger: 'TestNet',
@@ -334,11 +334,11 @@ AlgoSigner.indexer({
       });
     }
     
-    document.getElementById('check').addEventListener("click", check);
-    document.getElementById('connect').addEventListener("click", connect);
-    document.getElementById('accounts').addEventListener("click", accounts);
-    document.getElementById('status').addEventListener("click", status);
-    document.getElementById('assets').addEventListener("click", assets);
+    document.getElementById('check').addEventListener('click', check);
+    document.getElementById('connect').addEventListener('click', connect);
+    document.getElementById('accounts').addEventListener('click', accounts);
+    document.getElementById('status').addEventListener('click', status);
+    document.getElementById('assets').addEventListener('click', assets);
   </script>
   </body>
 </html>
