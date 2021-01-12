@@ -180,19 +180,19 @@
           <pre class="mt-2"><code class="JSON" id="assets-code">response</code></pre>
         </div>
         <div class="column">
-<pre><code class="js">const name = document.getElementById("name").value;
-const limit = document.getElementById("limit").value;
+<pre><code class="js">const name = document.getElementById('name').value;
+const limit = document.getElementById('limit').value;
 
 AlgoSigner.indexer({
   ledger: 'TestNet',
   path: `/v2/assets?name=${name}&limit=${limit}`,
 })
 .then((d) => {
-  document.getElementById("assets-code").innerHTML = JSON.stringify(d);
+  document.getElementById('assets-code').innerHTML = JSON.stringify(d);
 })
 .catch((e) => {
   console.error(e);
-  document.getElementById("assets-code").innerHTML = JSON.stringify(e);
+  document.getElementById('assets-code').innerHTML = JSON.stringify(e);
 });</code></pre>
         </div>
       </div>
@@ -256,17 +256,17 @@ AlgoSigner.indexer({
 
         <div class="column">
 <pre><code class="js"><b>AlgoSigner</b>.sign({
-  "from": document.getElementById("from").value,
-  "to": document.getElementById("from").value,
-  "assetIndex": +document.getElementById("asset").value,
-  "note": document.getElementById("note").value,
-  "amount": 0,
-  "type": "axfer",
-  "fee": txParams['min-fee'],
-  "firstRound": txParams['last-round'],
-  "lastRound": txParams['last-round'] + 1000,
-  "genesisID": txParams['genesis-id'],
-  "genesisHash": txParams['genesis-hash']
+  from: document.getElementById('from').value,
+  to: document.getElementById('from').value,
+  assetIndex: +document.getElementById('asset').value,
+  note: document.getElementById('note').value,
+  amount: 0,
+  type: 'axfer',
+  fee: txParams['min-fee'],
+  firstRound: txParams['last-round'],
+  lastRound: txParams['last-round'] + 1000,
+  genesisID: txParams['genesis-id'],
+  genesisHash: txParams['genesis-hash']
 })
 .then((d) => {
   signedTx = d;
@@ -374,7 +374,7 @@ AlgoSigner.indexer({
     let tx = {};
 
     function connect() {
-      let connectCodeElem = document.getElementById("connect-code");
+      let connectCodeElem = document.getElementById('connect-code');
 
       AlgoSigner.connect()
       .then((d) => {
@@ -390,7 +390,7 @@ AlgoSigner.indexer({
     }
 
     function accounts(){
-      let accountsCodeElem = document.getElementById("accounts-code");
+      let accountsCodeElem = document.getElementById('accounts-code');
 
       AlgoSigner.accounts({
         ledger: 'TestNet'
@@ -400,10 +400,10 @@ AlgoSigner.indexer({
         tnAccounts = d;
 
         // Append accounts to account select
-        let select = document.getElementById("from");
+        let select = document.getElementById('from');
         select.textContent = '';
         for (var i = d.length - 1; i >= 0; i--) {
-          let option = document.createElement("option");
+          let option = document.createElement('option');
           option.text = d[i].address;
           option.value = d[i].address;
           select.appendChild(option);
@@ -419,7 +419,7 @@ AlgoSigner.indexer({
     }
 
     function params(){
-      let paramsCodeElem = document.getElementById("params-code");
+      let paramsCodeElem = document.getElementById('params-code');
 
       AlgoSigner.algod({
         ledger: 'TestNet',
@@ -439,10 +439,10 @@ AlgoSigner.indexer({
     }
 
     function assets(){
-      let assetsCodeElem = document.getElementById("assets-code");
+      let assetsCodeElem = document.getElementById('assets-code');
 
-      const name = document.getElementById("name").value;
-      const limit = document.getElementById("limit").value;
+      const name = document.getElementById('name').value;
+      const limit = document.getElementById('limit').value;
 
       AlgoSigner.indexer({
         ledger: 'TestNet',
@@ -453,10 +453,10 @@ AlgoSigner.indexer({
         assetsList = d.assets;
 
         // Append assets to assets select
-        let select = document.getElementById("asset");
+        let select = document.getElementById('asset');
         select.textContent = '';
         for (var i = assetsList.length - 1; i >= 0; i--) {
-          let option = document.createElement("option");
+          let option = document.createElement('option');
           option.text = assetsList[i].params.name || assetsList[i].index;
           option.value = assetsList[i].index;
           select.appendChild(option);
@@ -472,20 +472,20 @@ AlgoSigner.indexer({
     }
 
     function sign(){
-      let signCodeElem = document.getElementById("sign-code");
+      let signCodeElem = document.getElementById('sign-code');
 
       AlgoSigner.sign({
-        "from": document.getElementById("from").value,
-        "to": document.getElementById("from").value,
-        "assetIndex": +document.getElementById("asset").value,
-        "note": document.getElementById("note").value,
-        "amount": 0,
-        "type": "axfer",
-        "fee": txParams['min-fee'],
-        "firstRound": txParams['last-round'],
-        "lastRound": txParams['last-round'] + 1000,
-        "genesisID": txParams['genesis-id'],
-        "genesisHash": txParams['genesis-hash']
+        from: document.getElementById('from').value,
+        to: document.getElementById('from').value,
+        assetIndex: +document.getElementById('asset').value,
+        note: document.getElementById('note').value,
+        amount: 0,
+        type: 'axfer',
+        fee: txParams['min-fee'],
+        firstRound: txParams['last-round'],
+        lastRound: txParams['last-round'] + 1000,
+        genesisID: txParams['genesis-id'],
+        genesisHash: txParams['genesis-hash']
       })
       .then((d) => {
         signedTx = d;
@@ -501,7 +501,7 @@ AlgoSigner.indexer({
     }
 
     function send(){
-      let sendCodeElem = document.getElementById("send-code");
+      let sendCodeElem = document.getElementById('send-code');
 
       AlgoSigner.send({
         ledger: 'TestNet',
@@ -521,7 +521,7 @@ AlgoSigner.indexer({
     }
 
     function pending(){
-      let pendingCodeElem = document.getElementById("pending-code");
+      let pendingCodeElem = document.getElementById('pending-code');
 
       AlgoSigner.algod({
         ledger: 'TestNet',
@@ -539,13 +539,13 @@ AlgoSigner.indexer({
       });
     }
 
-    document.getElementById('connect').addEventListener("click", connect);
-    document.getElementById('accounts').addEventListener("click", accounts);
-    document.getElementById('params').addEventListener("click", params);
-    document.getElementById('assets').addEventListener("click", assets);
-    document.getElementById('sign').addEventListener("click", sign);
-    document.getElementById('send').addEventListener("click", send);
-    document.getElementById('pending').addEventListener("click", pending);
+    document.getElementById('connect').addEventListener('click', connect);
+    document.getElementById('accounts').addEventListener('click', accounts);
+    document.getElementById('params').addEventListener('click', params);
+    document.getElementById('assets').addEventListener('click', assets);
+    document.getElementById('sign').addEventListener('click', sign);
+    document.getElementById('send').addEventListener('click', send);
+    document.getElementById('pending').addEventListener('click', pending);
   </script>
 </body>
 </html>
