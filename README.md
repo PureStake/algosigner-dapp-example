@@ -4,8 +4,6 @@ Try it live at <a href="https://purestake.github.io/algosigner-dapp-example/" ta
 
 A sample dApp demonstrating integration with the AlgoSigner Wallet. 
 
-_The AlgoSigner project is in pre-release development, it may be necessary to refresh the sample dApp page on to resolve issues or to re-install the AlgoSigner Wallet._ 
-
 ### Functions
 Demonstrates several standard scenarios:
 
