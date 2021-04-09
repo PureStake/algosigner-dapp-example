@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,6 +11,7 @@
   <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/highlight.min.js"></script>
   <link rel="stylesheet" type="text/css" href="assets/style.css">
 </head>
+
 <body>
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
@@ -24,7 +26,8 @@
       </div>
 
       <div class="navbar-end">
-        <a class="navbar-item" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner/blob/develop/docs/dApp-integration.md">
+        <a class="navbar-item" target="_blank" rel="noopener noreferrer"
+          href="https://github.com/PureStake/algosigner/blob/develop/docs/dApp-integration.md">
           Documentation
         </a>
       </div>
@@ -37,7 +40,8 @@
     <div class="container">
       <h1 class="title">
         Connect
-        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/payment.html#L320">
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer"
+          href="https://github.com/PureStake/algosigner-dapp-example/blob/master/payment.html#L320">
           <span class="icon is-small">
             <i class="fab fa-github"></i>
           </span>
@@ -54,7 +58,7 @@
           <pre class="mt-2"><code class="JSON" id="connect-code">response</code></pre>
         </div>
         <div class="column">
-<pre><code class="js"><b>AlgoSigner</b>.connect()
+          <pre><code class="js"><b>AlgoSigner</b>.connect()
 .then((d) => {
   ...
 })
@@ -72,7 +76,8 @@
     <div class="container">
       <h1 class="title">
         Get TestNet Accounts
-        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/payment.html#L336">
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer"
+          href="https://github.com/PureStake/algosigner-dapp-example/blob/master/payment.html#L336">
           <span class="icon is-small">
             <i class="fab fa-github"></i>
           </span>
@@ -89,7 +94,7 @@
           <pre class="mt-2"><code class="JSON" id="accounts-code">response</code></pre>
         </div>
         <div class="column">
-<pre><code class="js"><b>AlgoSigner</b>.accounts({
+          <pre><code class="js"><b>AlgoSigner</b>.accounts({
   ledger: 'TestNet'
 })
 .then((d) => {
@@ -109,7 +114,8 @@
     <div class="container">
       <h1 class="title">
         Get Params
-        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/payment.html#L365">
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer"
+          href="https://github.com/PureStake/algosigner-dapp-example/blob/master/payment.html#L365">
           <span class="icon is-small">
             <i class="fab fa-github"></i>
           </span>
@@ -126,7 +132,7 @@
           <pre class="mt-2"><code class="JSON" id="params-code">response</code></pre>
         </div>
         <div class="column">
-<pre><code class="js"><b>AlgoSigner</b>.algod({
+          <pre><code class="js"><b>AlgoSigner</b>.algod({
   ledger: 'TestNet',
   path: '/v2/transactions/params'
 })
@@ -147,7 +153,8 @@
     <div class="container">
       <h1 class="title">
         Sign Pay Transaction
-        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/payment.html#L385">
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer"
+          href="https://github.com/PureStake/algosigner-dapp-example/blob/master/payment.html#L385">
           <span class="icon is-small">
             <i class="fab fa-github"></i>
           </span>
@@ -201,7 +208,7 @@
         </div>
 
         <div class="column">
-<pre><code class="js"><b>AlgoSigner</b>.sign({
+          <pre><code class="js"><b>AlgoSigner</b>.sign({
   from: document.getElementById('from').value,
   to: document.getElementById('to').value,
   amount: +document.getElementById('amount').value,
@@ -211,7 +218,8 @@
   firstRound: txParams['last-round'],
   lastRound: txParams['last-round'] + 1000,
   genesisID: txParams['genesis-id'],
-  genesisHash: txParams['genesis-hash']
+  genesisHash: txParams['genesis-hash'],
+  flatFee: true
 })
 .then((d) => {
   signedTx = d;
@@ -230,7 +238,8 @@
     <div class="container">
       <h1 class="title">
         Send Signed Transaction
-        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/payment.html#L413">
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer"
+          href="https://github.com/PureStake/algosigner-dapp-example/blob/master/payment.html#L413">
           <span class="icon is-small">
             <i class="fab fa-github"></i>
           </span>
@@ -247,7 +256,7 @@
           <pre class="mt-2"><code class="JSON" id="send-code">response</code></pre>
         </div>
         <div class="column">
-<pre><code class="js"><b>AlgoSigner</b>.send({
+          <pre><code class="js"><b>AlgoSigner</b>.send({
   ledger: 'TestNet',
   tx: signedTx.blob
 })
@@ -268,7 +277,8 @@
     <div class="container">
       <h1 class="title">
         Check pending transaction
-        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/payment.html#L433">
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer"
+          href="https://github.com/PureStake/algosigner-dapp-example/blob/master/payment.html#L433">
           <span class="icon is-small">
             <i class="fab fa-github"></i>
           </span>
@@ -285,7 +295,7 @@
           <pre class="mt-2"><code class="JSON" id="pending-code">response</code></pre>
         </div>
         <div class="column">
-<pre><code class="js"><b>AlgoSigner</b>.algod({
+          <pre><code class="js"><b>AlgoSigner</b>.algod({
   ledger: 'TestNet',
   path: '/v2/transactions/pending/' + tx.txId
 })
@@ -321,68 +331,68 @@
       let connectCodeElem = document.getElementById('connect-code');
 
       AlgoSigner.connect()
-      .then((d) => {
-        connectCodeElem.innerHTML = JSON.stringify(d, null, 2);
-      })
-      .catch((e) => {
-        console.error(e);
-        connectCodeElem.innerHTML = JSON.stringify(e, null, 2);
-      })
-      .finally(() => {
-        hljs.highlightBlock(connectCodeElem);
-      });
+        .then((d) => {
+          connectCodeElem.innerHTML = JSON.stringify(d, null, 2);
+        })
+        .catch((e) => {
+          console.error(e);
+          connectCodeElem.innerHTML = JSON.stringify(e, null, 2);
+        })
+        .finally(() => {
+          hljs.highlightBlock(connectCodeElem);
+        });
     }
 
-    function accounts(){
+    function accounts() {
       let accountsCodeElem = document.getElementById('accounts-code');
 
       AlgoSigner.accounts({
         ledger: 'TestNet'
       })
-      .then((d) => {
-        accountsCodeElem.innerHTML = JSON.stringify(d, null, 2);
-        tnAccounts = d;
+        .then((d) => {
+          accountsCodeElem.innerHTML = JSON.stringify(d, null, 2);
+          tnAccounts = d;
 
-        // Append accounts to account select
-        let select = document.getElementById('from');
-        select.textContent = '';
-        for (var i = d.length - 1; i >= 0; i--) {
-          let option = document.createElement('option');
-          option.text = d[i].address;
-          option.value = d[i].address;
-          select.appendChild(option);
-        }
-      })
-      .catch((e) => {
-        console.error(e);
-        accountsCodeElem.innerHTML = JSON.stringify(e, null, 2);
-      })
-      .finally(() => {
-        hljs.highlightBlock(accountsCodeElem);
-      });
+          // Append accounts to account select
+          let select = document.getElementById('from');
+          select.textContent = '';
+          for (var i = d.length - 1; i >= 0; i--) {
+            let option = document.createElement('option');
+            option.text = d[i].address;
+            option.value = d[i].address;
+            select.appendChild(option);
+          }
+        })
+        .catch((e) => {
+          console.error(e);
+          accountsCodeElem.innerHTML = JSON.stringify(e, null, 2);
+        })
+        .finally(() => {
+          hljs.highlightBlock(accountsCodeElem);
+        });
     }
 
-    function params(){
+    function params() {
       let paramsCodeElem = document.getElementById('params-code');
 
       AlgoSigner.algod({
         ledger: 'TestNet',
         path: '/v2/transactions/params'
       })
-      .then((d) => {
-        paramsCodeElem.innerHTML = JSON.stringify(d, null, 2);
-        txParams = d;
-      })
-      .catch((e) => {
-        console.error(e);
-        paramsCodeElem.innerHTML = JSON.stringify(e, null, 2);
-      })
-      .finally(() => {
-        hljs.highlightBlock(paramsCodeElem);
-      });
+        .then((d) => {
+          paramsCodeElem.innerHTML = JSON.stringify(d, null, 2);
+          txParams = d;
+        })
+        .catch((e) => {
+          console.error(e);
+          paramsCodeElem.innerHTML = JSON.stringify(e, null, 2);
+        })
+        .finally(() => {
+          hljs.highlightBlock(paramsCodeElem);
+        });
     }
 
-    function sign(){
+    function sign() {
       let signCodeElem = document.getElementById('sign-code');
 
       AlgoSigner.sign({
@@ -395,58 +405,59 @@
         firstRound: txParams['last-round'],
         lastRound: txParams['last-round'] + 1000,
         genesisID: txParams['genesis-id'],
-        genesisHash: txParams['genesis-hash']
+        genesisHash: txParams['genesis-hash'],
+        flatFee: true
       })
-      .then((d) => {
-        signedTx = d;
-        signCodeElem.innerHTML = JSON.stringify(d, null, 2);
-      })
-      .catch((e) => {
-        console.error(e);
-        signCodeElem.innerHTML = JSON.stringify(e, null, 2);
-      })
-      .finally(() => {
-        hljs.highlightBlock(signCodeElem);
-      });
+        .then((d) => {
+          signedTx = d;
+          signCodeElem.innerHTML = JSON.stringify(d, null, 2);
+        })
+        .catch((e) => {
+          console.error(e);
+          signCodeElem.innerHTML = JSON.stringify(e, null, 2);
+        })
+        .finally(() => {
+          hljs.highlightBlock(signCodeElem);
+        });
     }
 
-    function send(){
+    function send() {
       let sendCodeElem = document.getElementById('send-code');
 
       AlgoSigner.send({
         ledger: 'TestNet',
         tx: signedTx.blob
       })
-      .then((d) => {
-        sendCodeElem.innerHTML = JSON.stringify(d, null, 2);
-        tx = d;
-      })
-      .catch((e) => {
-        console.error(e);
-        sendCodeElem.innerHTML = JSON.stringify(e, null, 2);
-      })
-      .finally(() => {
-        hljs.highlightBlock(sendCodeElem);
-      });
+        .then((d) => {
+          sendCodeElem.innerHTML = JSON.stringify(d, null, 2);
+          tx = d;
+        })
+        .catch((e) => {
+          console.error(e);
+          sendCodeElem.innerHTML = JSON.stringify(e, null, 2);
+        })
+        .finally(() => {
+          hljs.highlightBlock(sendCodeElem);
+        });
     }
 
-    function pending(){
+    function pending() {
       let pendingCodeElem = document.getElementById('pending-code');
 
       AlgoSigner.algod({
         ledger: 'TestNet',
         path: '/v2/transactions/pending/' + tx.txId
       })
-      .then((d) => {
-        pendingCodeElem.innerHTML = JSON.stringify(d, null, 2);
-      })
-      .catch((e) => {
-        console.error(e);
-        pendingCodeElem.innerHTML = JSON.stringify(e, null, 2);
-      })
-      .finally(() => {
-        hljs.highlightBlock(pendingCodeElem);
-      });
+        .then((d) => {
+          pendingCodeElem.innerHTML = JSON.stringify(d, null, 2);
+        })
+        .catch((e) => {
+          console.error(e);
+          pendingCodeElem.innerHTML = JSON.stringify(e, null, 2);
+        })
+        .finally(() => {
+          hljs.highlightBlock(pendingCodeElem);
+        });
     }
 
     document.getElementById('connect').addEventListener('click', connect);
@@ -457,4 +468,5 @@
     document.getElementById('pending').addEventListener('click', pending);
   </script>
 </body>
+
 </html>
