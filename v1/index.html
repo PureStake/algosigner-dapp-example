@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AlgoSigner dApp</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
-  <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="../assets/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/styles/tomorrow.min.css">
   <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/highlight.min.js"></script>
   <link rel="stylesheet" type="text/css" href="assets/style.css">
@@ -100,52 +100,7 @@
     </div>
   </section>
   <!-- /CONNECT -->
-
-  <!-- SDKSETUP -->
-  <section class="section">
-  <div class="container">
-    <h1 class="title">
-      SDK Setup
-      <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer"
-        href="https://github.com/PureStake/algosigner-dapp-example/blob/master/payment.html#L320">
-        <span class="icon is-small">
-          <i class="fab fa-github"></i>
-        </span>
-        <span>See code on GitHub</span>
-      </a>
-    </h1>
-    <p class="subtitle">
-      Setup client for algosdk
-    </p>
-
-    <div class="columns">
-      <div class="column">
-        <button class="button is-primary is-fullwidth" id="sdksetup">Setup SDK</button>
-        <pre class="mt-2"><code class="JSON" id="sdk-setup">response</code></pre>
-      </div>
-      <div class="column">
-        <pre><code class="js">const algodServer = 'https://testnet-algorand.api.purestake.io/ps2'
-const indexerServer = 'https://testnet-algorand.api.purestake.io/idx2'
-const token = { 'X-API-Key': 'YOUR API KEY HERE' }
-const port = '';
-
-algodClient = new algosdk.Algodv2(token, algodServer, port);
-indexerClient = new algosdk.Indexer(token, indexerServer, port);
-
-algodClient.healthCheck().do()
-.then(d => { 
-  ... 
-})
-.catch(e => { 
-  console.error(e); 
-});
-</code></pre>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- /SDKSETUP -->
-
+  
   <!-- ACCOUNTS -->
   <section class="section">
     <div class="container">
@@ -206,7 +161,10 @@ algodClient.healthCheck().do()
           <pre class="mt-2"><code class="JSON" id="status-code">response</code></pre>
         </div>
         <div class="column">
-<pre><code class="js">algodClient.status.do()
+<pre><code class="js"><b>AlgoSigner</b>.algod({
+  ledger: 'TestNet',
+  path: '/v2/status'
+})
 .then((d) => {
   document.getElementById('status-code').innerHTML = JSON.stringify(d);
 })
@@ -261,10 +219,10 @@ algodClient.healthCheck().do()
 <pre><code class="js">const name = document.getElementById('name').value;
 const limit = document.getElementById('limit').value;
 
-indexerClient.searchForAssets()
-.limit(limit)
-.name(name)
-.do()
+AlgoSigner.indexer({
+  ledger: 'TestNet',
+  path: `/v2/assets?name=${name}&limit=${limit}`,
+})
 .then((d) => {
   document.getElementById('assets-code').innerHTML = JSON.stringify(d);
 })
@@ -281,7 +239,7 @@ indexerClient.searchForAssets()
   <footer class="footer">
     <div class="content has-text-centered">
       by <a target="_blank" rel="noopener noreferrer" href="https://purestake.com">
-        <img src="assets/ps-logo.png" height="28">
+        <img src="../assets/ps-logo.png" height="28">
       </a>
     </div>
   </footer>
@@ -289,35 +247,6 @@ indexerClient.searchForAssets()
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   <script>
     hljs.initHighlightingOnLoad();
-    let txParamsJS = {};
-    let algodClient = {};
-    let indexerClient = {};
-
-    // Helper used with JSON.stringify that replaces Uint8Array data with ascii text for display
-    function toJsonReplace(key, value) {    
-        // Return value immediately if null or undefined
-        if(value === undefined || value === null){
-            return value;
-        }
-
-        // Check for uint8 arrays to get buffer for print
-        if(value instanceof Uint8Array || (typeof(value)==='object' && value instanceof Array && value.length > 0 && typeof(value[0]) === 'number')){
-            // We have a key that is an address type then use the sdk base 58 method, otherwise use base64
-            const addressKeys = ['rcv','snd','to','from','manager','reserve','freeze','clawback','c','f','r','m','asnd','arcv','aclose','fadd'];
-            if(key && addressKeys.includes(key)) {
-                return algosdk.encodeAddress(value);
-            }
-            return btoa(value);
-        }
-
-        // Check for literal string match on object type to cycle further into the recursive replace
-        if(typeof(value) === '[object Object]'){
-            return JSON.stringify(value,_toJsonReplace,2);
-        } 
-
-        // Return without modification
-        return value;
-    }
 
     function check() {
       let checkCodeElem = document.getElementById('check-code');
@@ -344,26 +273,6 @@ indexerClient.searchForAssets()
         hljs.highlightBlock(connectCodeElem);
       });
     }
-
-    function sdkSetup() {
-      let sdkSetupCodeElem = document.getElementById('sdk-setup');
-
-      const algodServer = 'https://testnet-algorand.api.purestake.io/ps2';
-      const indexerServer = 'https://testnet-algorand.api.purestake.io/idx2';
-      const token = { 'X-API-Key': 'B3SU4KcVKi94Jap2VXkK83xx38bsv95K5UZm2lab' }
-      const port = '';
-
-      algodClient = new algosdk.Algodv2(token, algodServer, port);
-      indexerClient = new algosdk.Indexer(token, indexerServer, port);
-
-      // Health check
-      algodClient.healthCheck().do()
-      .then(d => { sdkSetupCodeElem.innerHTML = JSON.stringify(d, null, 2); })
-      .catch(e => { sdkSetupCodeElem.innerHTML = JSON.stringify(e, null, 2); })
-      .finally(() => {
-        hljs.highlightBlock(sdkSetupCodeElem);
-      });      
-    }
     
     function accounts(){
       let accountsCodeElem = document.getElementById('accounts-code');
@@ -387,7 +296,10 @@ indexerClient.searchForAssets()
     function status(){
       let statusCodeElem = document.getElementById('status-code');
 
-      algodClient.status().do()
+      AlgoSigner.algod({
+        ledger: 'TestNet',
+        path: '/v2/status'
+      })
       .then((d) => {
         statusCodeElem.innerHTML = JSON.stringify(d, null, 2);
       })
@@ -406,10 +318,10 @@ indexerClient.searchForAssets()
       const name = document.getElementById('name').value;
       const limit = document.getElementById('limit').value;
 
-      indexerClient.searchForAssets()
-      .limit(limit)
-      .name(name)
-      .do()
+      AlgoSigner.indexer({
+        ledger: 'TestNet',
+        path: `/v2/assets?name=${name}&limit=${limit}`,
+      })
       .then((d) => {
         assetsCodeElem.innerHTML = JSON.stringify(d, null, 2);
       })
@@ -424,11 +336,9 @@ indexerClient.searchForAssets()
     
     document.getElementById('check').addEventListener('click', check);
     document.getElementById('connect').addEventListener('click', connect);
-    document.getElementById('sdksetup').addEventListener('click', sdkSetup);
     document.getElementById('accounts').addEventListener('click', accounts);
     document.getElementById('status').addEventListener('click', status);
     document.getElementById('assets').addEventListener('click', assets);
   </script>
-  <script src="https://unpkg.com/algosdk@latest"></script>
   </body>
 </html>

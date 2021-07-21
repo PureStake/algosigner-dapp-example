@@ -49,7 +49,7 @@ async function createGroupPayTx() {
         let sdkTxs = [tx1, tx2, tx3];
         
         if(_EXTRA_LOGGING) {
-            selfLog(JSON.stringify(sdkTxs),'extra')
+            selfLog(JSON.stringify(sdkTxs,toJsonReplace,1),'extra')
         }
         
         // Use the AlgoSigner encoding library to make the transactions base64
@@ -73,8 +73,8 @@ async function createGroupPayTx() {
         let tx3result = tx3.signTxn(acct.sk);
     
         // Transform the blob results on transactions into Uint8Array
-        let t1 = new Uint8Array(atob(signedTxs[0].blob).split("").map(x => x.charCodeAt(0)));
-        let t2 = new Uint8Array(atob(signedTxs[1].blob).split("").map(x => x.charCodeAt(0)));
+        let t1 = AlgoSigner.encoding.stringToByteArray(signedTxs[0].blob);
+        let t2 = AlgoSigner.encoding.stringToByteArray(signedTxs[1].blob);
         let t3 = tx3result; // The result from signTxn is already Uint8Array
 
         selfLog(`Transaction Blob 1: ${signedTxs[0].blob}`,'info');
@@ -83,9 +83,9 @@ async function createGroupPayTx() {
 
         if(_SEND_WITH_SDK && sendSignedTx()) {
             // Set client
-            const server = 'INSERT_SERVER_ADDRESS';
+            const server = 'https://testnet-algorand.api.purestake.io/ps2';
             const port = "";
-            const token = {'X-API-Key': 'INSERT_API_KEY_HERE'};
+            const token = {'X-API-Key': 'B3SU4KcVKi94Jap2VXkK83xx38bsv95K5UZm2lab'};
 
             if((server === 'INSERT_SERVER_ADDRESS') || (token['X-API-Key'] === 'INSERT_API_KEY_HERE')) {
                 selfLog(`You must declare server, token, and port to use SDK send.`,'bad');
@@ -99,11 +99,11 @@ async function createGroupPayTx() {
             let sendResult = await client
             .sendRawTransaction(grouped_txns)
             .do().catch((x)=>{
-                selfLog(`Send failed ${JSON.stringify(x)}`,'bad');
+                selfLog(`Send failed ${JSON.stringify(x,toJsonReplace,1)}`,'bad');
             });
 
             if(sendResult) {
-                selfLog(JSON.stringify(sendResult),'good');
+                selfLog(JSON.stringify(sendResult,toJsonReplace,1),'good');
             }
             else {
                 selfLog('No result from send.','bad');
@@ -123,8 +123,8 @@ async function createGroupPayTx() {
                 ledger: 'TestNet',
                 tx: grouped_txns_64b
             }).then((tx) =>{
-                selfLog(JSON.stringify(tx),'good');
-            }).catch((e)=>{selfLog(JSON.stringify(e),'bad')});
+                selfLog(JSON.stringify(tx,toJsonReplace,1),'good');
+            }).catch((e)=>{selfLog(JSON.stringify(e,toJsonReplace,1),'bad')});
         } 
     });
 }

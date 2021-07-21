@@ -1,8 +1,10 @@
 let txParams = undefined;
+let txParamsJS = undefined;
 let account = undefined;
+let logContainer = undefined;
 let signedTx;
 let txId = '';
-let logContainer = undefined;
+let hideDebugMsgs = true;
 
 async function statusCheck(){
     await AlgoSigner.algod({
@@ -42,6 +44,17 @@ async function getParams(){
     .then((d) => {
         selfLog(`Tx Params: ${JSON.stringify(d)}`);
         txParams = d;
+        if(txParams) {
+            // Creating copy of parameters obtained via an API in a converted state for JS Algosdk use
+            txParamsJS = {
+                flatFee: false,
+                fee: txParams['fee'],
+                firstRound: txParams['last-round'],
+                lastRound: txParams['last-round'] + 1000,
+                genesisID: txParams['genesis-id'],
+                genesisHash: txParams['genesis-hash']
+            }
+        }
     })
     .catch((e) => {
         selfLog(JSON.stringify(e),'bad');
