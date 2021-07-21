@@ -38,7 +38,7 @@ async function transferAsset(){
             assetIndex: 1
         };
         selfLog(`Prepared Transfer Tx: ${JSON.stringify(txn)}`);
-        await sign(txn);
+        await sign(txn).catch(e => {selfLog(`Sign error ${e}`,'bad')});
     }).catch((e) => {
         selfLog(e,'bad');
     });

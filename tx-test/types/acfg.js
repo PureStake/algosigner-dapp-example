@@ -37,10 +37,8 @@ async function modifyAsset(){
             firstRound: txParams['last-round'],
             lastRound: txParams['last-round'] + 1000,
             genesisID: txParams['genesis-id'],
-            genesisHash: txParams['genesis-hash'],
-            
-            assetIndex: 1,
-            assetDecimals: 1
+            genesisHash: txParams['genesis-hash'],         
+            assetIndex: 150559
         };
         selfLog(`Prepared Modify Tx: ${JSON.stringify(txn)}`);
         await sign(txn);
