@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>AlgoSigner V1 to V2 Transition Guide</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/styles/tomorrow.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/highlight.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./assets/style.css">
+</head>
+
+<body>
+    <div class="container">
+    <h1 class="title pt-3">
+        AlgoSigner V1 to V2 Transition Guide
+    </h1>
+    <hr/>
+</div>
+    <!-- /CONNECT -->
+    <div class="container">
+        <h1 class="title">
+        Connect
+        </h1>
+        <p class="subtitle">
+            <span class="icon has-text-success">
+                <i class="fas fa-check-circle"></i>
+            </span>
+            Connecting to AlgoSigner is not effected by the transition
+        </p>
+
+        <div class="columns">
+        <div class="column">
+            <button class="button is-primary is-fullwidth" id="connectv1">V1 Connect</button>
+            <pre><code class="js"><b>AlgoSigner</b>.connect()
+.catch(e => console.error(e));</code></pre>
+        </div>
+        <div class="column">
+            <button class="button is-primary is-fullwidth" id="connectv2">V2 Connect</button>
+            <pre><code class="js"><b>AlgoSigner</b>.connect()
+.catch(e => console.error(e));</code></pre>
+        </div>
+    </div>  
+    <pre class="mt-2"><code class="JSON" id="connect-code">response</code></pre>
+    
+    <!-- /CONNECT -->
+
+    <!-- SDKSETUP -->
+    <hr />
+    <div class="container">
+        <h1 class="title">
+            SDK Setup
+        </h1> 
+        <p class="subtitle">
+            <span class="icon has-text-success">
+                <i class="fas fa-check-circle"></i>
+            </span>
+            The algosdk client setup is not effected by the transition
+        </p>
+
+        <div class="columns">
+            <div class="column">
+                <button class="button is-primary is-fullwidth" id="sdksetupv1">V1 Setup SDK</button>
+                <pre><code class="js">const algodServer = 'https://testnet-algorand.api.purestake.io/ps2';
+const token = { 'X-API-Key': 'YOUR API KEY HERE' };
+
+algodClient = new algosdk.Algodv2(token, algodServer, '');
+
+algodClient.status().do()
+.then(d => console.log(d['last-round']))
+.catch(e =>  console.error(e));</code></pre>
+            </div>
+            <div class="column">
+                <button class="button is-primary is-fullwidth" id="sdksetupv2">V2 Setup SDK</button>
+                <pre><code class="js">const algodServer = 'https://testnet-algorand.api.purestake.io/ps2';
+const token = { 'X-API-Key': 'YOUR API KEY HERE' };
+
+algodClient = new algosdk.Algodv2(token, algodServer, '');
+
+algodClient.status().do()
+.then(d => console.log(d['last-round']))
+.catch(e =>  console.error(e));</code></pre>
+            </div>
+        </div>
+        <pre class="mt-2"><code class="JSON" id="sdk-setup">response</code></pre>
+    </div>
+    <!-- /SDKSETUP -->
+
+    <!-- ACCOUNTS -->
+    <hr />
+    <div class="container">
+        <h1 class="title">
+            Get TestNet Accounts
+        </h1>
+        <p class="subtitle">
+            <span class="icon has-text-success">
+                <i class="fas fa-check-circle"></i>
+            </span>
+            Retrieval of user accounts is not effected by the transition
+        </p>
+
+        <div class="columns">
+            <div class="column">
+                <button class="button is-primary is-fullwidth" id="accountsv1">V1 Get Accounts</button>
+                <pre><code class="js"><b>AlgoSigner</b>.accounts({ ledger: 'TestNet' })
+.then(d => accounts = d)
+.catch(e => console.error(e));</code></pre>
+            </div>
+            <div class="column">
+                <button class="button is-primary is-fullwidth" id="accountsv2">V2 Get Accounts</button>
+                <pre><code class="js"><b>AlgoSigner</b>.accounts({ ledger: 'TestNet' })
+.then(d => accounts = d)
+.catch(e => console.error(e));</code></pre>
+            </div>
+        </div>
+        <pre class="mt-2"><code class="JSON" id="accounts-code">response</code></pre>
+    </div>
+    <!-- /ACCOUNTS -->
+
+    <!-- PARAMS -->
+    <hr />
+    <div class="container">
+        <h1 class="title">
+            Get Params
+        </h1>
+        <p class="subtitle">
+            <span class="icon has-text-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            There is a change in the way paramaters are expected to be obtained 
+            <div class="ml-6"><b>Use getTransactionParams(): </b>Use the algoClient.getTransactionParams() function instead of direct calls to the api</div>
+            <br />
+        </p>
+
+        <div class="columns">
+            <div class="column">
+                <button class="button is-primary is-fullwidth" id="paramsv1">V1 Get Params</button>
+                <pre><code class="js"><b>AlgoSigner</b>.algod({
+    ledger: 'TestNet',
+    path: '/v2/transactions/params'
+})
+.then(d => txParams = d)
+.catch(e => console.error(e));</code></pre>
+            </div>
+            <div class="column">
+                <button class="button is-primary is-fullwidth" id="paramsv2">V2 Get Params</button>
+                <pre><code class="js">algodClient.getTransactionParams().do()
+.then(d => txParamsJS = d)
+.catch(e => console.error(e));</code></pre>
+            </div>
+        </div>
+        <pre class="mt-2"><code class="JSON" id="params-code">response</code></pre>
+    </div>
+    <!-- /PARAMS -->
+
+    <!-- SIGN -->
+    <hr />
+    <div class="container">
+        <h1 class="title">
+            Sign Pay Transaction
+        </h1>
+        <p class="subtitle">
+            <span class="icon has-text-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            There are several notable differences in the signing functionality
+            <div class="ml-6"><b>Make Transaction: </b>The make transaction functions in algosdk can now be used directly</div>
+            <div class="ml-6"><b>Params: </b>Suggested params in make functions use JavaScript naming from the result of algodClient.getTransactionParams() instead of the API - 'genesis-id' -> 'genesisID'</div>
+            <div class="ml-6"><b>Binary Values: </b>Previously converted fields ['note','group','appArgs','appApprovalProgram','appClearProgram'] should be binary</div>
+            <div class="ml-6"><b>Transaction Encoding: </b>The transaction must be converted to base64 after undergoing a toByte() - AlgoSigner.encoding.msgpackToBase64(txn.toByte())</div>
+            <div class="ml-6"><b>Use signTxn(): </b>The signing method is now AlgoSigner.signTxn() instead of sign()</div>
+            <div class="ml-6"><b>Array Transactions: </b>The function signTxn() accepts an array of transactions following the signing standards structure <a href="https://github.com/algorandfoundation/ARCs/blob/main/ARCs/arc-0001.md">here</a></div>
+            <br />
+        </p>
+
+        <div >
+            <div class="field">
+                <div class="control has-icons-left">
+                <div class="select is-fullwidth">
+                    <select id="from">
+                    <option>Get accounts first</option>
+                    </select>
+                </div>
+                <div class="icon is-small is-left">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                </div>
+            </div>
+            <div class="field">
+                <p class="control has-icons-left">
+                <input class="input" id="to" placeholder="To">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-share"></i>
+                </span>
+                </p>
+            </div>
+            <div class="field">
+                <p class="control has-icons-left">
+                <input class="input" id="amount" placeholder="&#181;Algos">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-coins"></i>
+                </span>
+                </p>
+            </div>
+            <div class="field">
+                <p class="control has-icons-left">
+                <input class="input" id="note" placeholder="Note">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-sticky-note"></i>
+                </span>
+                </p>
+            </div>                              
+        </div>
+        <br />
+        <div class="columns">
+            <div class="column">
+                <button class="button is-primary is-fullwidth" id="signv1">V1 Sign</button>
+                <pre><code class="js"><b>AlgoSigner</b>.sign({
+    from: document.getElementById('from').value,
+    to: document.getElementById('to').value,
+    amount: +document.getElementById('amount').value,
+    note: document.getElementById('note').value,
+    type: 'pay',
+    fee: txParams['min-fee'],
+    firstRound: txParams['last-round'],
+    lastRound: txParams['last-round'] + 1000,
+    genesisID: txParams['genesis-id'],
+    genesisHash: txParams['genesis-hash'],
+    flatFee: true
+})
+.then(d => signedTx = d)
+.catch(e => console.error(e));</code></pre>
+            </div>
+            <div class="column">
+                <button class="button is-primary is-fullwidth" id="signv2">V2 Sign</button>
+                <pre><code class="js">const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+    from: document.getElementById('from').value,
+    to: document.getElementById('to').value,
+    amount: +document.getElementById('amount').value,
+    note: AlgoSigner.encoding.stringToByteArray(document.getElementById('note').value),
+    suggestedParams: {...txParamsJS}
+});
+
+// Use the AlgoSigner encoding library to make the transactions base64
+let txn_b64 = <b>AlgoSigner</b>.encoding.msgpackToBase64(txn.toByte());
+
+<b>AlgoSigner</b>.signTxn([{txn: txn_b64}])
+.then(d => signedTxs = d)
+.catch(e => console.error(e));</code></pre>
+            </div>           
+        </div>   
+        <pre class="mt-2"><code id="sign-code">response</code></pre>
+    </div>
+    <!-- /SIGN -->
+
+    <!-- SEND -->
+    <hr />
+    <div class="container">
+        <h1 class="title">
+            Send Signed Transaction
+        </h1>
+        <p class="subtitle">
+            <span class="icon has-text-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Send transaction is mostly the same, with one exception.
+            <div class="ml-6"><b>Array from signTxn(): </b>The result of signTxn() is an array so use the index to obtain a specific transaction</div>
+            <br />
+        </p>
+
+        <div class="columns">
+            <div class="column">
+                <button class="button is-primary is-fullwidth" id="sendv1">V1 Send</button>
+                <pre><code class="js"><b>AlgoSigner</b>.send({
+  ledger: 'TestNet',
+  tx: signedTx.blob
+})
+.then(d => tx = d)
+.catch(e => console.error(e));</code></pre>
+            </div>
+            <div class="column">
+                <button class="button is-primary is-fullwidth" id="sendv2">V2 Send</button>
+                <pre><code class="js"><b>AlgoSigner</b>.send({
+  ledger: 'TestNet',
+  tx: signedTxs[0].blob
+})
+.then(d => tx = d)
+.catch(e => console.error(e));</code></pre>
+            </div>
+        </div>
+        <pre class="mt-2"><code class="JSON" id="send-code">response</code></pre>
+    </div>
+    <!-- /SEND -->
+
+    <footer class="footer">
+        <div class="content has-text-centered">
+        by <a target="_blank" rel="noopener noreferrer" href="https://purestake.com">
+            <img src="assets/ps-logo.png" height="28px">
+        </a>
+        </div>
+    </footer>
+
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+        let txParamsJS;
+        let signedTx;
+        let signedTxs;
+        let tx;
+        let algodClient;
+
+        function connect() {
+            let connectCodeElem = document.getElementById('connect-code');
+            AlgoSigner.connect()
+            .then(d => connectCodeElem.innerHTML = JSON.stringify(d, null, 2))
+            .catch(e => connectCodeElem.innerHTML = JSON.stringify(e, null, 2))
+        }
+
+        function sdkSetup() {
+            let sdkSetupCodeElem = document.getElementById('sdk-setup');
+            const server = 'https://testnet-algorand.api.purestake.io/ps2';
+            const token = { 'X-API-Key': 'B3SU4KcVKi94Jap2VXkK83xx38bsv95K5UZm2lab' };
+
+            algodClient = new algosdk.Algodv2(token, server, '');
+            
+            algodClient.status().do()
+            .then(d => sdkSetupCodeElem.innerHTML = 'Last round: ' + d['last-round'])
+            .catch(e => sdkSetupCodeElem.innerHTML = JSON.stringify(e, null, 2))
+            .finally(() => hljs.highlightBlock(sdkSetupCodeElem));    
+        }
+
+        function accounts() {
+            let accountsCodeElem = document.getElementById('accounts-code');
+            AlgoSigner.accounts({ ledger: 'TestNet' })
+            .then(d => {
+                accountsCodeElem.innerHTML = JSON.stringify(d, null, 2);
+
+                // Append accounts to account select
+                let select = document.getElementById('from');
+                select.textContent = '';
+                for (var i = d.length - 1; i >= 0; i--) {
+                    let option = document.createElement('option');
+                    option.text = d[i].address;
+                    option.value = d[i].address;
+                    select.appendChild(option);
+                }
+            })
+            .catch(e => accountsCodeElem.innerHTML = JSON.stringify(e, null, 2))
+            .finally(() => hljs.highlightBlock(accountsCodeElem));
+        }
+
+        function getParamsV1() {
+            let paramsCodeElem = document.getElementById('params-code');
+            AlgoSigner.algod({
+                ledger: 'TestNet',
+                path: '/v2/transactions/params'
+            })
+            .then(d => {
+                txParams = d;
+                paramsCodeElem.innerHTML = JSON.stringify(txParams, null, 2);
+            })
+            .catch(e => paramsCodeElem.innerHTML = JSON.stringify(e, null, 2))
+            .finally(() => hljs.highlightBlock(paramsCodeElem));
+        }
+
+        function getParamsV2() {
+            let paramsCodeElem = document.getElementById('params-code');
+
+            if (!algodClient) {
+                paramsCodeElem.innerHTML = 'Setup SDK before using getTransactionParams().';
+                return;
+            }
+
+            algodClient.getTransactionParams().do()
+            .then(d => {
+                txParamsJS = d;
+                paramsCodeElem.innerHTML = JSON.stringify(txParamsJS, null, 2);
+            })      
+            .catch(e => paramsCodeElem.innerHTML = JSON.stringify(e, null, 2))
+            .finally(() => hljs.highlightBlock(paramsCodeElem));
+        }
+
+        function signV1() {
+            let signCodeElem = document.getElementById('sign-code');
+
+            if (!txParams) {
+                signCodeElem.innerHTML = 'Retrieve V1 parameters before signing.';
+                return;
+            }   
+
+            if (!document.getElementById('from').value 
+            || !document.getElementById('to').value
+            || !document.getElementById('amount').value) {
+                signCodeElem.innerHTML = 'Initialize values above for from, to, and amount before signing.';
+                return;
+            } 
+
+            AlgoSigner.sign({
+                from: document.getElementById('from').value,
+                to: document.getElementById('to').value,
+                amount: +document.getElementById('amount').value,
+                note: document.getElementById('note').value,
+                type: 'pay',
+                fee: txParams['min-fee'],
+                firstRound: txParams['last-round'],
+                lastRound: txParams['last-round'] + 1000,
+                genesisID: txParams['genesis-id'],
+                genesisHash: txParams['genesis-hash'],
+                flatFee: true
+            })
+            .then(d => {
+                signedTx = d;
+                signCodeElem.innerHTML = JSON.stringify(d, null, 2);
+            })
+            .catch(e => signCodeElem.innerHTML = JSON.stringify(e, null, 2))
+            .finally(() => hljs.highlightBlock(signCodeElem));
+        }
+
+        function signV2() {
+            let signCodeElem = document.getElementById('sign-code');
+
+            if (!algodClient || !txParamsJS) {
+                signCodeElem.innerHTML = 'Setup SDK and retrieve V2 parameters before signing.';
+                return;
+            }    
+
+            if (!document.getElementById('from').value 
+            || !document.getElementById('to').value
+            || !document.getElementById('amount').value) {
+                signCodeElem.innerHTML = 'Initialize values above for from, to, and amount before signing.';
+                return;
+            } 
+            const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+                from: document.getElementById('from').value,
+                to: document.getElementById('to').value,
+                amount: +document.getElementById('amount').value,
+                note: AlgoSigner.encoding.stringToByteArray(document.getElementById('note').value),
+                suggestedParams: {...txParamsJS}
+            });
+
+            // Use the AlgoSigner encoding library to make the transactions base64
+            let txn_b64 = AlgoSigner.encoding.msgpackToBase64(txn.toByte());
+
+            AlgoSigner.signTxn([{txn: txn_b64}])
+            .then(d => {
+                signedTxs = d;
+                signCodeElem.innerHTML = JSON.stringify(d, null, 2);
+            })
+            .catch(e => signCodeElem.innerHTML = JSON.stringify(e, null, 2))
+            .finally(() => hljs.highlightBlock(signCodeElem));
+        }
+
+        function sendV1() {
+            let sendCodeElem = document.getElementById('send-code');
+
+            if (!signedTx) {
+                sendCodeElem.innerHTML = 'Complete transaction signing before attempting to send.';
+                return;
+            } 
+
+            // Sending first transaction only for demo purposes
+            AlgoSigner.send({
+                ledger: 'TestNet',
+                tx: signedTx.blob 
+            })
+            .then(d => {
+                sendCodeElem.innerHTML = JSON.stringify(d, null, 2);
+                tx = d;
+            })
+            .catch(e => sendCodeElem.innerHTML = JSON.stringify(e, null, 2))
+            .finally(() => hljs.highlightBlock(sendCodeElem));
+        }
+
+        function sendV2() {
+            let sendCodeElem = document.getElementById('send-code');
+
+            if (!signedTxs || !signedTxs[0]) {
+                sendCodeElem.innerHTML = 'Complete transaction signing before attempting to send.';
+                return;
+            }   
+
+            // Sending first transaction only for demo purposes
+            AlgoSigner.send({
+                ledger: 'TestNet',
+                tx: signedTxs[0].blob 
+            })
+            .then(d => {
+                sendCodeElem.innerHTML = JSON.stringify(d, null, 2);
+                tx = d;
+            })
+            .catch(e => sendCodeElem.innerHTML = JSON.stringify(e, null, 2))
+            .finally(() => hljs.highlightBlock(sendCodeElem));
+        }
+
+
+        document.getElementById('connectv1').addEventListener('click', connect);
+        document.getElementById('connectv2').addEventListener('click', connect);
+        document.getElementById('sdksetupv1').addEventListener('click', sdkSetup);
+        document.getElementById('sdksetupv2').addEventListener('click', sdkSetup);
+        document.getElementById('accountsv1').addEventListener('click', accounts);
+        document.getElementById('accountsv2').addEventListener('click', accounts);
+        document.getElementById('paramsv1').addEventListener('click', getParamsV1);
+        document.getElementById('paramsv2').addEventListener('click', getParamsV2);
+        document.getElementById('signv1').addEventListener('click', signV1);
+        document.getElementById('signv2').addEventListener('click', signV2);
+        document.getElementById('sendv1').addEventListener('click', sendV1);
+        document.getElementById('sendv2').addEventListener('click', sendV2);        
+    </script>
+    <script src="https://unpkg.com/algosdk@latest"></script>
+</body>
+</html>
