@@ -31,5 +31,8 @@ afrzTx.addEventListener("click", freezeAsset, false);
 let groupTx = document.getElementById('groupTx');
 groupTx.addEventListener("click", createGroupPayTx, false);
 
+let groupGroupsTxs = document.getElementById('groupGroupsTxs');
+groupGroupsTxs.addEventListener("click", createGroupGroupsTxs, false);
+
 let multisigTx = document.getElementById('multisigTx');
 multisigTx.addEventListener("click", createMultisigTx, false);
