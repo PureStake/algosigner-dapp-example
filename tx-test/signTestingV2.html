@@ -1,59 +1,65 @@
 <!DOCTYPE html>
 <html>
-    <title>Algosigner - Sign Testing for V2</title>   
-    <head>
-        <link rel="stylesheet" href="signTesting.css">
-    </head>
-    <body>
-        <div class="heading">
-            <h1 class="maintitle">Algosigner - Sign Testing for V2</h1>   
-            <div class="override-default-tx">
-                <input type="checkbox" id="usetxdefaults" name="usetxdefaults" checked="checked">
-                <label for="usetxdefaults">Use Default Tx</label>
-                <span class="separator"></span>
-                <input type="checkbox" id="sendsignedtx" name="sendsignedtx">
-                <label for="usetxdefaults">Send Transaction</label>
-            </div>
-        </div>
-        <div class="buttons">
-                <button id="payTx" class="btn">Pay</button>
-                <button id="groupTx" class="btn">Group</button>
-                <button id="groupGroupsTxs" class="btn">Group of Groups</button>
-                <button id="multisigTx" class="btn">Multisig</button>
-                <span class="separator"></span>
-                
-                <button id="applTx" class="btn">Application</button>
-                <span class="separator"></span>
+  <title>Algosigner - Sign Testing for V2</title>
+  <head>
+    <link rel="stylesheet" href="signTesting.css" />
+  </head>
+  <body>
+    <div class="heading">
+      <h1 class="maintitle">Algosigner - Sign Testing for V2</h1>
+      <div class="override-default-tx">
+        <input
+          type="checkbox"
+          id="usetxdefaults"
+          name="usetxdefaults"
+          checked="checked"
+        />
+        <label for="usetxdefaults">Use Default Tx</label>
+        <span class="separator"></span>
+        <input type="checkbox" id="sendsignedtx" name="sendsignedtx" />
+        <label for="usetxdefaults">Send Transaction</label>
+      </div>
+    </div>
+    <div class="buttons">
+      <button id="payTx" class="btn">Pay</button>
+      <button id="groupTx" class="btn">Group</button>
+      <button id="groupGroupsTxs" class="btn">Group of Groups</button>
+      <button id="multisigTx" class="btn">Multisig</button>
+      <span class="separator"></span>
 
-                <button id="acceptTx" class="btn">Accept</button>
-                <button id="axferTx" class="btn">Transfer</button>           
-                <span class="separator"></span>
+      <button id="applTx" class="btn">Application</button>
+      <span class="separator"></span>
 
-                <button id="acfgModifyTx" class="btn">Config</button>
-                <button id="acfgCreateTx" class="btn">Create</button>
-                <button id="acfgDestroyTx" class="btn">Destroy</button>
-                <span class="separator"></span>
+      <button id="acceptTx" class="btn">Accept</button>
+      <button id="axferTx" class="btn">Transfer</button>
+      <button id="closeTx" class="btn">Close</button>
+      <span class="separator"></span>
 
-                <button id="clawbackTx" class="btn">Clawback</button>
-                <button id="afrzTx" class="btn">Freeze</button>             
-        </div>
-        <div id="log-container" class="log-container"></div>
-        <script src="https://unpkg.com/algosdk@latest"></script>
+      <button id="acfgModifyTx" class="btn">Config</button>
+      <button id="acfgCreateTx" class="btn">Create</button>
+      <button id="acfgDestroyTx" class="btn">Destroy</button>
+      <span class="separator"></span>
 
-        <script src="./common/setup.js"></script>
-        <script src="./common/log.js"></script>
-        <script src="./common/sign.js"></script>
-        <script src="./common/helper.js"></script>
+      <button id="clawbackTx" class="btn">Clawback</button>
+      <button id="afrzTx" class="btn">Freeze</button>
+    </div>
+    <div id="log-container" class="log-container"></div>
+    <script src="https://unpkg.com/algosdk@latest"></script>
 
-        <script src="./typesV2/acfg.js"></script>
-        <script src="./typesV2/afrz.js"></script>
-        <script src="./typesV2/appl.js"></script>
-        <script src="./typesV2/axfer.js"></script>
-        <script src="./typesV2/pay.js"></script>
-        <script src="./typesV2/group.js"></script>
-        <script src="./typesV2/groupGroups.js"></script>
-        <script src="./typesV2/multisig.js"></script>
+    <script src="./common/setup.js"></script>
+    <script src="./common/log.js"></script>
+    <script src="./common/sign.js"></script>
+    <script src="./common/helper.js"></script>
 
-        <script src="signTesting.js"></script>
-    </body>
+    <script src="./typesV2/acfg.js"></script>
+    <script src="./typesV2/afrz.js"></script>
+    <script src="./typesV2/appl.js"></script>
+    <script src="./typesV2/axfer.js"></script>
+    <script src="./typesV2/pay.js"></script>
+    <script src="./typesV2/group.js"></script>
+    <script src="./typesV2/groupGroups.js"></script>
+    <script src="./typesV2/multisig.js"></script>
+
+    <script src="signTesting.js"></script>
+  </body>
 </html>
