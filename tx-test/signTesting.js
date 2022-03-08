@@ -32,7 +32,16 @@ let groupTx = document.getElementById('groupTx');
 groupTx.addEventListener("click", createGroupPayTx, false);
 
 let groupGroupsTxs = document.getElementById('groupGroupsTxs');
-groupGroupsTxs.addEventListener("click", createGroupGroupsTxs, false);
+if(groupGroupsTxs)
+    groupGroupsTxs.addEventListener("click", createGroupGroupsTxs, false);
 
 let multisigTx = document.getElementById('multisigTx');
 multisigTx.addEventListener("click", createMultisigTx, false);
+
+let rekeyTx = document.getElementById('rekeyTx');
+if(rekeyTx)
+    rekeyTx.addEventListener("click", createRekeyTx, false);
+
+let rekeyedPayTx = document.getElementById('rekeyedPayTx');
+if(rekeyedPayTx)
+    rekeyedPayTx.addEventListener("click", createRekeyedPayTx, false);

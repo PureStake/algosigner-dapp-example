@@ -111,9 +111,7 @@ async function destroyAsset(){
 
             // First transaction debug check
             const primaryBlob = d[0]['blob'];
-            const byteBlob = AlgoSigner.encoding.stringToByteArray(atob(primaryBlob));
-            selfLog(`${JSON.stringify(algosdk.decodeObj(byteBlob),toJsonReplace,1)}`, 'debug');
-
+  
             if(sendSignedTx()) {
                 // Purposely not deleting to prevent accidental deletes
                 selfLog('Delete transactions are not sent in this test tool by design.', 'bad')      

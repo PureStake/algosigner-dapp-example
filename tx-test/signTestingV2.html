@@ -16,26 +16,40 @@
             </div>
         </div>
         <div class="buttons">
+            <div> 
+                <div style="display: inline-block; width: 100px;">Common</div>
+                <span class="separator"></span>
                 <button id="payTx" class="btn">Pay</button>
-                <button id="groupTx" class="btn">Group</button>
-                <button id="groupGroupsTxs" class="btn">Group of Groups</button>
-                <button id="multisigTx" class="btn">Multisig</button>
-                <span class="separator"></span>
-                
-                <button id="applTx" class="btn">Application</button>
-                <span class="separator"></span>
-
                 <button id="acceptTx" class="btn">Accept</button>
-                <button id="axferTx" class="btn">Transfer</button>           
-                <span class="separator"></span>
+                <button id="axferTx" class="btn">Transfer</button>
+              
+            </div>
 
+            <div>       
+                <div style="display: inline-block; width: 100px;">Asset Control</div>   
+                <span class="separator"></span>
                 <button id="acfgModifyTx" class="btn">Config</button>
                 <button id="acfgCreateTx" class="btn">Create</button>
                 <button id="acfgDestroyTx" class="btn">Destroy</button>
-                <span class="separator"></span>
-
                 <button id="clawbackTx" class="btn">Clawback</button>
-                <button id="afrzTx" class="btn">Freeze</button>             
+                <button id="afrzTx" class="btn">Freeze</button>
+            </div>
+
+            <div> 
+                <div style="display: inline-block; width: 100px;">Complex</div>
+                <span class="separator"></span> 
+                <button id="groupTx" class="btn">Group</button>
+                <button id="groupGroupsTxs" class="btn">Group of Groups</button>
+                <button id="multisigTx" class="btn">Multisig</button> 
+                <button id="applTx" class="btn">Application</button>
+            </div>
+
+            <div> 
+                <div style="display: inline-block; width: 100px;">Rekey</div>
+                <span class="separator"></span>
+                <button id="rekeyTx" class="btn">Rekey</button>     
+                <button id="rekeyedPayTx" class="btn">Rekeyed Pay</button>  
+            </div> 
         </div>
         <div id="log-container" class="log-container"></div>
         <script src="https://unpkg.com/algosdk@latest"></script>
@@ -53,6 +67,8 @@
         <script src="./typesV2/group.js"></script>
         <script src="./typesV2/groupGroups.js"></script>
         <script src="./typesV2/multisig.js"></script>
+        <script src="./typesV2/rekey.js"></script>
+        <script src="./typesV2/rekeyedPay.js"></script>
 
         <script src="signTesting.js"></script>
     </body>

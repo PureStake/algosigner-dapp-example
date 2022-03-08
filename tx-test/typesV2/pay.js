@@ -23,14 +23,12 @@ async function createPayTx(){
 
             // First transaction debug check
             const primaryBlob = d[0]['blob'];
-            const byteBlob = AlgoSigner.encoding.stringToByteArray(atob(primaryBlob));
-            selfLog(`${JSON.stringify(algosdk.decodeObj(byteBlob),toJsonReplace,1)}`, 'debug');
-
+ 
             if(sendSignedTx()) {
                 //Forcing testnet only to prevent accidental mainnet calls
                 AlgoSigner.send({
                     ledger: 'TestNet',
-                    tx: d.blob
+                    tx: primaryBlob
                 }).then((tx) =>{
                     selfLog(`Transaction Sent: ${JSON.stringify(tx,toJsonReplace,1)}`,'good');
                 }).catch((e)=>{selfLog(e,'bad')});          

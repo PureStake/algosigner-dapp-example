@@ -1,6 +1,7 @@
 var highlights = {
  'good': 'hlt-good',
  'bad': 'hlt-bad',
+ 'warning': 'hlt-warn',
  'extra': 'hlt-extra',
  'default': 'hlt-default',
  'debug': 'hlt-extra'
