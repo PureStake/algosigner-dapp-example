@@ -13,6 +13,10 @@ acceptTx.addEventListener("click", acceptAsset, false);
 let axferTx = document.getElementById('axferTx');
 axferTx.addEventListener("click", transferAsset, false);
 
+let closeTx = document.getElementById("closeTx");
+if (closeTx) 
+    closeTx.addEventListener("click", closeAsset, false);
+
 let clawbackTx = document.getElementById('clawbackTx');
 clawbackTx.addEventListener("click", clawbackAsset, false);
 
