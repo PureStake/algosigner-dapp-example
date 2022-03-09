@@ -45,6 +45,9 @@ body {
 .hlt-bad {
     color: #cd5c5c;
 }
+.hlt-warn {
+    color: #bdc225;
+}
 .hlt-extra {
     color: #bb88bb;
 }

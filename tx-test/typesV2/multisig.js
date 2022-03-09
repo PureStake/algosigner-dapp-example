@@ -54,24 +54,12 @@ async function createMultisigTx() {
 
             // First transaction debug check
             const primaryBlob = d[0]['blob'];
-            const byteBlob = AlgoSigner.encoding.stringToByteArray(atob(primaryBlob));
-            const decodedBlob = algosdk.decodeObj(byteBlob);
-            selfLog(`${JSON.stringify(decodedBlob,toJsonReplace,1)}`, 'debug');
 
-            const combinedSignedTxn = algosdk.appendSignMultisigTransaction(
-                byteBlob,
-                ms.mparams,
-                account3.sk
-            )
-
-            selfLog(`Combined Signed Txn:${JSON.stringify(combinedSignedTxn,toJsonReplace,1)}`, 'good');
-            selfLog(`Combined Decoded Txn:${JSON.stringify(algosdk.decodeObj(combinedSignedTxn.blob),toJsonReplace,1)}`, 'debug');
-            
             if(sendSignedTx()) {
                 //Forcing testnet only to prevent accidental mainnet calls
                 AlgoSigner.send({
                     ledger: 'TestNet',
-                    tx: combinedSignedTxn.blob
+                    tx: primaryBlob
                 }).then((tx) =>{
                     selfLog(`Transaction Sent: ${JSON.stringify(tx,toJsonReplace,1)}`,'good');
                 }).catch((e)=>{selfLog(e,'bad')});          

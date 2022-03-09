@@ -18,9 +18,10 @@ let axferTx = document.getElementById("axferTx");
 axferTx.addEventListener("click", transferAsset, false);
 
 let closeTx = document.getElementById("closeTx");
-if (closeTx) closeTx.addEventListener("click", closeAsset, false);
+if (closeTx) 
+    closeTx.addEventListener("click", closeAsset, false);
 
-let clawbackTx = document.getElementById("clawbackTx");
+let clawbackTx = document.getElementById('clawbackTx');
 clawbackTx.addEventListener("click", clawbackAsset, false);
 
 let acfgModifyTx = document.getElementById("acfgModifyTx");
@@ -38,8 +39,17 @@ afrzTx.addEventListener("click", freezeAsset, false);
 let groupTx = document.getElementById("groupTx");
 groupTx.addEventListener("click", createGroupPayTx, false);
 
-let groupGroupsTxs = document.getElementById("groupGroupsTxs");
-if (groupGroupsTxs) groupGroupsTxs.addEventListener("click", createGroupGroupsTxs, false);
+let groupGroupsTxs = document.getElementById('groupGroupsTxs');
+if(groupGroupsTxs)
+    groupGroupsTxs.addEventListener("click", createGroupGroupsTxs, false);
 
 let multisigTx = document.getElementById("multisigTx");
 multisigTx.addEventListener("click", createMultisigTx, false);
+
+let rekeyTx = document.getElementById('rekeyTx');
+if(rekeyTx)
+    rekeyTx.addEventListener("click", createRekeyTx, false);
+
+let rekeyedPayTx = document.getElementById('rekeyedPayTx');
+if(rekeyedPayTx)
+    rekeyedPayTx.addEventListener("click", createRekeyedPayTx, false);

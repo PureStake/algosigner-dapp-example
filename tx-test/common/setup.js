@@ -19,13 +19,33 @@ async function statusCheck(){
         selfLog(JSON.stringify(e));
     });
 }
+async function getTestNetSpecificAccount(address){
+    await AlgoSigner.accounts({ledger: 'TestNet'}).then((d) => {
+        if(d && d.length > 0){
+            try {        
+                account = d.find(acc => acc.address === address);
+                selfLog(`Using address: "${account.address}".`, 'good');
+            }
+            catch {
+                selfLog(`Address "${address}" not found in AlgoSigner.`, 'bad');
+            }
+        }
+        else{
+            throw('No test account not found in AlgoSigner.');
+        }
+    })
+    .catch((e) => {
+        selfLog(JSON.stringify(e),'bad');
+    });
+}
 
 async function getTestNetPrimaryAccount(){
     await AlgoSigner.accounts({ledger: 'TestNet'})
     .then((d) => {
         if(d && d.length > 0){
-            selfLog(`Account found: ${JSON.stringify(d[0])}`);
-            account = d[0];
+            const accountNumber = 0;
+            account = d[accountNumber];     
+            selfLog(`Using Address: ${account.address}.`) 
         }
         else{
             throw('Primary test account not found in AlgoSigner.');
@@ -61,7 +81,10 @@ async function getParams(){
     });
 }
 
-async function setupTx(){
+async function setupTx(params){
+    setupParams = params || {};
+    const { address } = setupParams;
+
     if(AlgoSigner && account && txParams){
         return;
     }
@@ -73,8 +96,13 @@ async function setupTx(){
         await statusCheck();
     }).then(async () => {   
         await getParams();
-    }).then(async () => {      
-        await getTestNetPrimaryAccount();
+    }).then(async () => {     
+        if(address) {
+            await getTestNetSpecificAccount(address);
+        } 
+        else {
+            await getTestNetPrimaryAccount();
+        }
     })
     
 }
