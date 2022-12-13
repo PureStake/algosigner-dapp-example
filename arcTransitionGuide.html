@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>AlgoSigner ARC Transition Guide</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/styles/tomorrow.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/highlight.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./assets/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="title pt-3">
+            `window.AlgoSigner` to `window.algorand` Transition Guide
+        </h1>
+        <hr/>
+    </div>
+
+    <!-- WINDOW OBJECT -->
+    <div class="container">
+        <h1 class="title">
+        AlgoSigner API
+        </h1>
+        <p class="subtitle">
+            <span class="icon has-text-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            There is a change in the way to access AlgoSigner methods
+        </p>
+
+        <div class="columns">
+            <div class="column">
+                <button class="button is-primary is-fullwidth" id="algosigner-object">window.AlgoSigner</button>
+                <pre><code class="js">
+if (typeof <b>AlgoSigner</b> !== 'undefined') {
+    console.log('AlgoSigner is installed.');
+}
+                </code></pre>
+            </div>
+            <div class="column">
+                <button class="button is-primary is-fullwidth" id="algorand-object">window.algorand</button>
+                <pre><code class="js">
+if (typeof <b>algorand</b> !== 'undefined') {
+    console.log('AlgoSigner is installed.');
+}
+                </code></pre>
+            </div>
+        </div>
+        <pre class="mt-2"><code class="JSON" id="object-code">response</code></pre>
+    </div>
+    <!-- /WINDOW OBJECT -->
+
+    <!-- SDKSETUP -->
+    <div class="container">
+        <hr />
+        <h1 class="title">
+            Client Setup & Transaction Parameters Fecthing
+        </h1> 
+        <p class="subtitle">
+            <span class="icon has-text-success">
+                <i class="fas fa-check-circle"></i>
+            </span>
+            The algosdk client setup is not effected by the transition
+        </p>
+
+        <div class="columns">
+            <div class="column">
+                <button class="button is-primary is-fullwidth" id="sdk-client">Setup SDK client</button>
+                <pre><code class="js">
+const algodServer = 'https://testnet-algorand.api.purestake.io/ps2';
+const token = { 'X-API-Key': 'YOUR API KEY HERE' };
+
+algodClient = new algosdk.Algodv2(token, algodServer, '');
+
+algodClient.getTransactionParams().do()
+.then(d => txParamsJS = d)
+.catch(e =>  console.error(e));
+                </code></pre>
+            </div>
+            <div class="column">
+                <button class="button is-primary is-fullwidth" id="algorand-client">Setup SDK client</button>
+                <pre><code class="js">
+const algodServer = 'https://testnet-algorand.api.purestake.io/ps2';
+const token = { 'X-API-Key': 'YOUR API KEY HERE' };
+
+algodClient = new algosdk.Algodv2(token, algodServer, '');
+
+algodClient.getTransactionParams().do()
+.then(d => txParamsJS = d)
+.catch(e =>  console.error(e));
+                </code></pre>
+            </div>
+        </div>
+        <pre class="mt-2"><code class="JSON" id="client-code">response</code></pre>
+    </div>
+    <!-- /SDKSETUP -->
+
+    <!-- ENABLE -->
+    <div class="container">
+        <hr />
+        <h1 class="title">
+        Connect / Accounts
+        </h1>
+        <p class="subtitle">
+            <span class="icon has-text-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            There is a change in the way you connect to AlgoSigner and retrieve accounts
+        </p>
+        <p>Additional documentation can be found <a href="https://github.com/PureStake/algosigner/blob/develop/docs/dApp-integration.md#algorandenableenableopts-enableopts">here</a></p>
+        </br>
+        <div class="columns">
+            <div class="column">
+                <button class="button is-primary is-fullwidth" id="algosigner-connect">AlgoSigner.connect()</button>
+                <pre><code class="js">
+<b>AlgoSigner</b>.connect()
+.catch(e => console.error(e));
+
+<b>AlgoSigner</b>.accounts({ ledger: 'TestNet' })
+.then(d => accounts = d)
+.catch(e => console.error(e));
+                </code></pre>
+            </div>
+            <div class="column">
+                <button class="button is-primary is-fullwidth" id="algorand-enable">algorand.enable()</button>
+                <pre><code class="js">
+<b>algorand</b>.enable({
+    genesisID: 'testnet-v1.0',
+    genesisHash: 'SGO1GKSzyE7IEPItTxCByw9x8FmnrCDexi9/cOUJOiI=',
+})
+.then(d => accounts = d.accounts)
+.catch(e => console.error(e));
+                </code></pre>
+            </div>
+        </div>
+        <pre class="mt-2"><code class="JSON" id="accounts-code">response</code></pre>
+    </div>  
+    <!-- /ENABLE -->
+
+    <!-- SIGN -->
+    <div class="container">
+        <hr />
+        <h1 class="title">
+            Sign Transactions
+        </h1>
+        <p class="subtitle">
+            <span class="icon has-text-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            There's a difference in the method names, as well as the method response when signing transactions
+        </p>
+        <p>
+            <b>Method name:</b> The signing method changes from <code>AlgoSigner.<b>signTxn</b></code> to <code>algorand.<b>signTxns</b></code>.
+        </p>
+        <p>
+            <b>Method response:</b> The returned signed blobs structure changes from <code>[{ txID, blob }, { txID, blob }, ...]</code> to <code>[ blob, blob, ... ]</code>.
+        </p>
+        <br />
+
+        <div >
+            <div class="field">
+                <div class="control has-icons-left">
+                <div class="select is-fullwidth">
+                    <select id="from">
+                    <option>Get accounts first</option>
+                    </select>
+                </div>
+                <div class="icon is-small is-left">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                </div>
+            </div>
+            <div class="field">
+                <p class="control has-icons-left">
+                <input class="input" id="to" placeholder="To">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-share"></i>
+                </span>
+                </p>
+            </div>
+            <div class="field">
+                <p class="control has-icons-left">
+                <input class="input" id="amount" placeholder="&#181;Algos">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-coins"></i>
+                </span>
+                </p>
+            </div>
+            <div class="field">
+                <p class="control has-icons-left">
+                <input class="input" id="note" placeholder="Note">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-sticky-note"></i>
+                </span>
+                </p>
+            </div>                              
+        </div>
+        <br />
+        <div class="columns">
+            <div class="column">
+                <button class="button is-primary is-fullwidth" id="algosigner-sign">AlgoSigner.signTxn()</button>
+                <pre><code class="js">
+const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+    from: document.getElementById('from').value,
+    to: document.getElementById('to').value,
+    amount: +document.getElementById('amount').value,
+    note: <b>AlgoSigner</b>.encoding.stringToByteArray(document.getElementById('note').value),
+    suggestedParams: {...txParamsJS}
+});
+
+// Use the AlgoSigner encoding library to make the transactions base64
+let txn_b64 = <b>AlgoSigner</b>.encoding.msgpackToBase64(txn.toByte());
+
+<b>AlgoSigner.signTxn</b>([{txn: txn_b64}])
+.then(d => signedTxs = d)
+.catch(e => console.error(e));
+                </code></pre>
+            </div>
+            <div class="column">
+                <button class="button is-primary is-fullwidth" id="algorand-sign">algorand.signTxns()</button>
+                <pre><code class="js">
+const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+    from: document.getElementById('from').value,
+    to: document.getElementById('to').value,
+    amount: +document.getElementById('amount').value,
+    note: <b>algorand</b>.encoding.stringToByteArray(document.getElementById('note').value),
+    suggestedParams: {...txParamsJS}
+});
+
+// Use the AlgoSigner encoding library to make the transactions base64
+let txn_b64 = <b>algorand</b>.encoding.msgpackToBase64(txn.toByte());
+
+<b>algorand.signTxns</b>([{txn: txn_b64}])
+.then(d => signedTxs = d)
+.catch(e => console.error(e));
+                </code></pre>
+            </div>           
+        </div>   
+        <pre class="mt-2"><code id="sign-code">response</code></pre>
+    </div>
+    <!-- /SIGN -->
+
+    <!-- SEND-POST -->
+    <div class="container">
+        <hr />
+        <h1 class="title">
+            Send Signed Transactions
+        </h1>
+        <p class="subtitle">
+            <span class="icon has-text-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            There is a change in the way signed transactions are sent to the network.
+        </p>
+        <p>
+            <b>Method name:</b> The method used changes from <code>AlgoSigner.<b>send</b></code> to <code>algorand.<b>postTxns</b></code>.
+        </p>
+        <p>
+            <b>Method parameters:</b> <code>algorand.postTxns</code> receives an array of signed transactions blobs instead of a single blob. The network is determined by the one selected during the <code>algorand.enable()</code> step.
+        </p>
+        <p>
+            <b>Method response:</b> similarly, <code>algorand.postTxns</code> returned object contains an array of txIDs instead of a single ID. The property inside the returned object name changes from <code>{ txId }</code> to <code>{ txIDs }</code>.
+        </p>
+        <p>
+            An additional method for signing and posting transactions with a single call is provided in the <code>algorand</code> object. Additional information can be found in the documentation <a href="https://github.com/PureStake/algosigner/blob/develop/docs/dApp-integration.md#algorandsignandposttxnstxnobjects-txnobject--txnobject">here</a>.
+        </p>
+        <br />
+
+        <div class="columns">
+            <div class="column">
+                <button class="button is-primary is-fullwidth" id="algosigner-send">AlgoSigner.send()</button>
+                <pre><code class="js">
+<b>AlgoSigner.send</b>({
+    ledger: 'TestNet',
+    tx: signedTxs[0].blob
+})
+.then(d => sendResponse = d)
+.catch(e => console.error(e));
+                </code></pre>
+            </div>
+            <div class="column">
+                <button class="button is-primary is-fullwidth" id="algorand-post">algorand.postTxns()</button>
+                <pre><code class="js">
+<b>algorand.postTxns</b>(signedTxs)
+.then(d => sendResponse = d)
+.catch(e => console.error(e));
+                </code></pre>
+            </div>
+        </div>
+        <pre class="mt-2"><code class="JSON" id="send-code">response</code></pre>
+    </div>
+    <!-- /SEND-POST -->
+
+    <footer class="footer">
+        <div class="content has-text-centered">
+        by <a target="_blank" rel="noopener noreferrer" href="https://purestake.com">
+            <img src="assets/ps-logo.png" height="28px">
+        </a>
+        </div>
+    </footer>
+
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+        let txParamsJS;
+        let signedTx;
+        let signedTxs;
+        let tx;
+        let algodClient;
+
+        // WINDOW OBJECT
+        document.getElementById('algosigner-object').addEventListener('click', () =>{
+            const responseElem = document.getElementById('object-code');
+            if (typeof window.AlgoSigner !== 'undefined') {
+                responseElem.innerHTML = 'AlgoSigner is installed.';
+            }
+        });
+        document.getElementById('algorand-object').addEventListener('click', () =>{
+            const responseElem = document.getElementById('object-code');
+            if (typeof window.algorand !== 'undefined') {
+                responseElem.innerHTML = 'AlgoSigner is installed.';
+            }
+        });
+
+        // CLIENT SETUP
+        function sdkSetup() {
+            let sdkSetupCodeElem = document.getElementById('client-code');
+            const server = 'https://testnet-algorand.api.purestake.io/ps2';
+            const token = { 'X-API-Key': 'B3SU4KcVKi94Jap2VXkK83xx38bsv95K5UZm2lab' };
+
+            algodClient = new algosdk.Algodv2(token, server, '');
+            
+            algodClient.getTransactionParams().do()
+            .then(d => {
+                txParamsJS = d;
+                sdkSetupCodeElem.innerHTML = JSON.stringify(txParamsJS, null, 2);
+            })
+            .catch(e => sdkSetupCodeElem.innerHTML = JSON.stringify(e, null, 2))
+            .finally(() => hljs.highlightBlock(sdkSetupCodeElem));    
+        }
+        document.getElementById('sdk-client').addEventListener('click', sdkSetup);
+        document.getElementById('algorand-client').addEventListener('click', sdkSetup);
+
+        // CONNECT / ENABLE
+        document.getElementById('algosigner-connect').addEventListener('click', async () =>{
+            await AlgoSigner.connect();
+            let accountsCodeElem = document.getElementById('accounts-code');
+            AlgoSigner.accounts({ ledger: 'TestNet' })
+            .then(d => {
+                accountsCodeElem.innerHTML = JSON.stringify(d, null, 2);
+                // Append accounts to account select
+                let select = document.getElementById('from');
+                select.textContent = '';
+                for (var i = d.length - 1; i >= 0; i--) {
+                    let option = document.createElement('option');
+                    option.text = d[i].address;
+                    option.value = d[i].address;
+                    select.appendChild(option);
+                }
+            })
+            .catch(e => accountsCodeElem.innerHTML = JSON.stringify(e, null, 2))
+            .finally(() => hljs.highlightBlock(accountsCodeElem));
+        });
+        document.getElementById('algorand-enable').addEventListener('click', async () =>{
+            let accountsCodeElem = document.getElementById('accounts-code');
+            algorand.enable({
+                genesisID: 'testnet-v1.0',
+            })
+            .then(d => {
+                accountsCodeElem.innerHTML = JSON.stringify(d, null, 2);
+                // Append accounts to account select
+                let select = document.getElementById('from');
+                select.textContent = '';
+                for (const address of d['accounts']) {
+                    let option = document.createElement('option');
+                    option.text = address;
+                    option.value = address;
+                    select.appendChild(option);
+                }
+            })
+            .catch(e => accountsCodeElem.innerHTML = JSON.stringify(e, null, 2))
+            .finally(() => hljs.highlightBlock(accountsCodeElem));
+        });
+
+        // SIGN TXNS
+        document.getElementById('algosigner-sign').addEventListener('click', async () => {
+            let signCodeElem = document.getElementById('sign-code');
+
+            if (!algodClient || !txParamsJS) {
+                signCodeElem.innerHTML = 'Setup SDK and retrieve parameters before signing.';
+                return;
+            }    
+
+            if (!document.getElementById('from').value 
+            || !document.getElementById('to').value
+            || !document.getElementById('amount').value) {
+                signCodeElem.innerHTML = 'Initialize values above for from, to, and amount before signing.';
+                return;
+            } 
+            const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+                from: document.getElementById('from').value,
+                to: document.getElementById('to').value,
+                amount: +document.getElementById('amount').value,
+                note: AlgoSigner.encoding.stringToByteArray(document.getElementById('note').value),
+                suggestedParams: {...txParamsJS}
+            });
+
+            // Use the AlgoSigner encoding library to make the transactions base64
+            let txn_b64 = AlgoSigner.encoding.msgpackToBase64(txn.toByte());
+
+            AlgoSigner.signTxn([{txn: txn_b64}])
+            .then(d => {
+                signedTxs = d;
+                signCodeElem.innerHTML = JSON.stringify(d, null, 2);
+            })
+            .catch(e => signCodeElem.innerHTML = JSON.stringify(e, null, 2))
+            .finally(() => hljs.highlightBlock(signCodeElem));
+        });
+        document.getElementById('algorand-sign').addEventListener('click', async () => {
+            let signCodeElem = document.getElementById('sign-code');
+
+            if (!algodClient || !txParamsJS) {
+                signCodeElem.innerHTML = 'Setup SDK and retrieve parameters before signing.';
+                return;
+            }    
+
+            if (!document.getElementById('from').value 
+            || !document.getElementById('to').value
+            || !document.getElementById('amount').value) {
+                signCodeElem.innerHTML = 'Initialize values above for from, to, and amount before signing.';
+                return;
+            } 
+            const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+                from: document.getElementById('from').value,
+                to: document.getElementById('to').value,
+                amount: +document.getElementById('amount').value,
+                note: algorand.encoding.stringToByteArray(document.getElementById('note').value),
+                suggestedParams: {...txParamsJS}
+            });
+
+            // Use the AlgoSigner encoding library to make the transactions base64
+            let txn_b64 = algorand.encoding.msgpackToBase64(txn.toByte());
+
+            algorand.signTxns([{txn: txn_b64}])
+            .then(d => {
+                signedTxs = d;
+                signCodeElem.innerHTML = JSON.stringify(d, null, 2);
+            })
+            .catch(e => signCodeElem.innerHTML = JSON.stringify(e, null, 2))
+            .finally(() => hljs.highlightBlock(signCodeElem));
+        });
+
+        // POST TXNS
+        document.getElementById('algosigner-send').addEventListener('click', async () => {
+            let sendCodeElem = document.getElementById('send-code');
+
+            if (!signedTxs || !signedTxs[0]) {
+                sendCodeElem.innerHTML = 'Complete transaction signing before attempting to send.';
+                return;
+            }   
+
+            AlgoSigner.send({
+                ledger: 'TestNet',
+                tx: signedTxs[0].blob 
+            })
+            .then(d => {
+                sendCodeElem.innerHTML = JSON.stringify(d, null, 2);
+                sendResponse = d;
+            })
+            .catch(e => sendCodeElem.innerHTML = JSON.stringify(e, null, 2))
+            .finally(() => hljs.highlightBlock(sendCodeElem));
+        });
+        document.getElementById('algorand-post').addEventListener('click', async () => {
+            let sendCodeElem = document.getElementById('send-code');
+
+            if (!signedTxs) {
+                sendCodeElem.innerHTML = 'Complete transaction signing before attempting to send.';
+                return;
+            }   
+
+            // Sending first transaction only for demo purposes
+            algorand.postTxns(signedTxs)
+            .then(d => {
+                sendCodeElem.innerHTML = JSON.stringify(d, null, 2);
+                sendResponse = d;
+            })
+            .catch(e => sendCodeElem.innerHTML = JSON.stringify(e, null, 2))
+            .finally(() => hljs.highlightBlock(sendCodeElem));
+        });
+    </script>
+    <script src="https://unpkg.com/algosdk@latest"></script>
+</body>
+</html>
