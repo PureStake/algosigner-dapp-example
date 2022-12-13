@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>AlgoSigner ARC Transition Guide</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@creativebulma/bulma-tooltip@1.2.0/dist/bulma-tooltip.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/styles/tomorrow.min.css">
     <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/highlight.min.js"></script>
     <link rel="stylesheet" type="text/css" href="./assets/style.css">
@@ -14,8 +15,11 @@
         <h1 class="title pt-3">
             `window.AlgoSigner` to `window.algorand` Transition Guide
         </h1>
-        <hr/>
+        <p>
+            Presently, both the <b>AlgoSigner</b> object and the <b>algorand</b> object coexist and work side-by-side, but there's plans to deprecate the <b>AlgoSigner</b> object in future versions of AlgoSigner.
+        </p>
     </div>
+    <hr/>
 
     <!-- WINDOW OBJECT -->
     <div class="container">
@@ -38,8 +42,13 @@ if (typeof <b>AlgoSigner</b> !== 'undefined') {
 }
                 </code></pre>
             </div>
-            <div class="column">
-                <button class="button is-primary is-fullwidth" id="algorand-object">window.algorand</button>
+            <div class="column" style="overflow: visible;">
+                <button
+                    data-tooltip="Click me to run this block of code!"
+                    class="button is-primary is-fullwidth has-tooltip-arrow has-tooltip-active"
+                    id="algorand-object">
+                    window.algorand
+                </button>
                 <pre><code class="js">
 if (typeof <b>algorand</b> !== 'undefined') {
     console.log('AlgoSigner is installed.');
@@ -47,7 +56,7 @@ if (typeof <b>algorand</b> !== 'undefined') {
                 </code></pre>
             </div>
         </div>
-        <pre class="mt-2"><code class="JSON" id="object-code">response</code></pre>
+        <pre class="mt-2"><code class="js" id="object-code">code snippet response</code></pre>
     </div>
     <!-- /WINDOW OBJECT -->
 
@@ -92,7 +101,7 @@ algodClient.getTransactionParams().do()
                 </code></pre>
             </div>
         </div>
-        <pre class="mt-2"><code class="JSON" id="client-code">response</code></pre>
+        <pre class="mt-2"><code class="JSON" id="client-code">code snippet response</code></pre>
     </div>
     <!-- /SDKSETUP -->
 
@@ -134,7 +143,7 @@ algodClient.getTransactionParams().do()
                 </code></pre>
             </div>
         </div>
-        <pre class="mt-2"><code class="JSON" id="accounts-code">response</code></pre>
+        <pre class="mt-2"><code class="JSON" id="accounts-code">code snippet response</code></pre>
     </div>  
     <!-- /ENABLE -->
 
@@ -237,7 +246,7 @@ let txn_b64 = <b>algorand</b>.encoding.msgpackToBase64(txn.toByte());
                 </code></pre>
             </div>           
         </div>   
-        <pre class="mt-2"><code id="sign-code">response</code></pre>
+        <pre class="mt-2"><code class="JSON" id="sign-code">code snippet response</code></pre>
     </div>
     <!-- /SIGN -->
 
@@ -288,7 +297,7 @@ let txn_b64 = <b>algorand</b>.encoding.msgpackToBase64(txn.toByte());
                 </code></pre>
             </div>
         </div>
-        <pre class="mt-2"><code class="JSON" id="send-code">response</code></pre>
+        <pre class="mt-2"><code class="JSON" id="send-code">code snippet response</code></pre>
     </div>
     <!-- /SEND-POST -->
 
