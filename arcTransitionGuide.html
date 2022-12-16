@@ -38,7 +38,9 @@
                 <button class="button is-primary is-fullwidth" id="algosigner-object">window.AlgoSigner</button>
                 <pre><code class="js">
 if (typeof <b>AlgoSigner</b> !== 'undefined') {
-    console.log('AlgoSigner is installed.');
+    console.log('AlgoSigner object is available.');
+} else {
+    console.log('AlgoSigner object was not found.');
 }
                 </code></pre>
             </div>
@@ -51,12 +53,14 @@ if (typeof <b>AlgoSigner</b> !== 'undefined') {
                 </button>
                 <pre><code class="js">
 if (typeof <b>algorand</b> !== 'undefined') {
-    console.log('AlgoSigner is installed.');
+    console.log('algorand object is available.');
+} else {
+    console.log('algorand object was not found.');
 }
                 </code></pre>
             </div>
         </div>
-        <pre class="mt-2"><code class="js" id="object-code">code snippet response</code></pre>
+        <pre class="mt-2"><code class="js" id="object-code">code snippet output</code></pre>
     </div>
     <!-- /WINDOW OBJECT -->
 
@@ -83,7 +87,7 @@ const token = { 'X-API-Key': 'YOUR API KEY HERE' };
 algodClient = new algosdk.Algodv2(token, algodServer, '');
 
 algodClient.getTransactionParams().do()
-.then(d => txParamsJS = d)
+.then(d => txnParams = d)
 .catch(e =>  console.error(e));
                 </code></pre>
             </div>
@@ -96,12 +100,12 @@ const token = { 'X-API-Key': 'YOUR API KEY HERE' };
 algodClient = new algosdk.Algodv2(token, algodServer, '');
 
 algodClient.getTransactionParams().do()
-.then(d => txParamsJS = d)
+.then(d => txnParams = d)
 .catch(e =>  console.error(e));
                 </code></pre>
             </div>
         </div>
-        <pre class="mt-2"><code class="JSON" id="client-code">code snippet response</code></pre>
+        <pre class="mt-2"><code class="JSON" id="client-code">code snippet output</code></pre>
     </div>
     <!-- /SDKSETUP -->
 
@@ -143,7 +147,7 @@ algodClient.getTransactionParams().do()
                 </code></pre>
             </div>
         </div>
-        <pre class="mt-2"><code class="JSON" id="accounts-code">code snippet response</code></pre>
+        <pre class="mt-2"><code class="JSON" id="accounts-code">code snippet output</code></pre>
     </div>  
     <!-- /ENABLE -->
 
@@ -172,7 +176,7 @@ algodClient.getTransactionParams().do()
                 <div class="control has-icons-left">
                 <div class="select is-fullwidth">
                     <select id="from">
-                    <option>Get accounts first</option>
+                    <option>Request accounts first</option>
                     </select>
                 </div>
                 <div class="icon is-small is-left">
@@ -215,13 +219,13 @@ const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     to: document.getElementById('to').value,
     amount: +document.getElementById('amount').value,
     note: <b>AlgoSigner</b>.encoding.stringToByteArray(document.getElementById('note').value),
-    suggestedParams: {...txParamsJS}
+    suggestedParams: {...txnParams}
 });
 
 // Use the AlgoSigner encoding library to make the transactions base64
-let txn_b64 = <b>AlgoSigner</b>.encoding.msgpackToBase64(txn.toByte());
+let b64EncodedTxn = <b>AlgoSigner</b>.encoding.msgpackToBase64(txn.toByte());
 
-<b>AlgoSigner.signTxn</b>([{txn: txn_b64}])
+<b>AlgoSigner.signTxn</b>([{txn: b64EncodedTxn}])
 .then(d => signedTxs = d)
 .catch(e => console.error(e));
                 </code></pre>
@@ -234,19 +238,19 @@ const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     to: document.getElementById('to').value,
     amount: +document.getElementById('amount').value,
     note: <b>algorand</b>.encoding.stringToByteArray(document.getElementById('note').value),
-    suggestedParams: {...txParamsJS}
+    suggestedParams: {...txnParams}
 });
 
 // Use the AlgoSigner encoding library to make the transactions base64
-let txn_b64 = <b>algorand</b>.encoding.msgpackToBase64(txn.toByte());
+let b64EncodedTxn = <b>algorand</b>.encoding.msgpackToBase64(txn.toByte());
 
-<b>algorand.signTxns</b>([{txn: txn_b64}])
+<b>algorand.signTxns</b>([{txn: b64EncodedTxn}])
 .then(d => signedTxs = d)
 .catch(e => console.error(e));
                 </code></pre>
             </div>           
         </div>   
-        <pre class="mt-2"><code class="JSON" id="sign-code">code snippet response</code></pre>
+        <pre class="mt-2"><code class="JSON" id="sign-code">code snippet output</code></pre>
     </div>
     <!-- /SIGN -->
 
@@ -297,7 +301,7 @@ let txn_b64 = <b>algorand</b>.encoding.msgpackToBase64(txn.toByte());
                 </code></pre>
             </div>
         </div>
-        <pre class="mt-2"><code class="JSON" id="send-code">code snippet response</code></pre>
+        <pre class="mt-2"><code class="JSON" id="send-code">code snippet output</code></pre>
     </div>
     <!-- /SEND-POST -->
 
@@ -312,7 +316,7 @@ let txn_b64 = <b>algorand</b>.encoding.msgpackToBase64(txn.toByte());
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script>
         hljs.initHighlightingOnLoad();
-        let txParamsJS;
+        let txnParams;
         let signedTx;
         let signedTxs;
         let tx;
@@ -322,13 +326,17 @@ let txn_b64 = <b>algorand</b>.encoding.msgpackToBase64(txn.toByte());
         document.getElementById('algosigner-object').addEventListener('click', () =>{
             const responseElem = document.getElementById('object-code');
             if (typeof window.AlgoSigner !== 'undefined') {
-                responseElem.innerHTML = 'AlgoSigner is installed.';
+                responseElem.innerHTML = 'AlgoSigner object is available.';
+            } else {
+                responseElem.innerHTML = 'AlgoSigner object was not found.';
             }
         });
         document.getElementById('algorand-object').addEventListener('click', () =>{
             const responseElem = document.getElementById('object-code');
             if (typeof window.algorand !== 'undefined') {
-                responseElem.innerHTML = 'AlgoSigner is installed.';
+                responseElem.innerHTML = 'algorand object is available.';
+            } else {
+                responseElem.innerHTML = 'algorand object was not found.';
             }
         });
 
@@ -342,8 +350,8 @@ let txn_b64 = <b>algorand</b>.encoding.msgpackToBase64(txn.toByte());
             
             algodClient.getTransactionParams().do()
             .then(d => {
-                txParamsJS = d;
-                sdkSetupCodeElem.innerHTML = JSON.stringify(txParamsJS, null, 2);
+                txnParams = d;
+                sdkSetupCodeElem.innerHTML = JSON.stringify(txnParams, null, 2);
             })
             .catch(e => sdkSetupCodeElem.innerHTML = JSON.stringify(e, null, 2))
             .finally(() => hljs.highlightBlock(sdkSetupCodeElem));    
@@ -396,7 +404,7 @@ let txn_b64 = <b>algorand</b>.encoding.msgpackToBase64(txn.toByte());
         document.getElementById('algosigner-sign').addEventListener('click', async () => {
             let signCodeElem = document.getElementById('sign-code');
 
-            if (!algodClient || !txParamsJS) {
+            if (!algodClient || !txnParams) {
                 signCodeElem.innerHTML = 'Setup SDK and retrieve parameters before signing.';
                 return;
             }    
@@ -412,13 +420,13 @@ let txn_b64 = <b>algorand</b>.encoding.msgpackToBase64(txn.toByte());
                 to: document.getElementById('to').value,
                 amount: +document.getElementById('amount').value,
                 note: AlgoSigner.encoding.stringToByteArray(document.getElementById('note').value),
-                suggestedParams: {...txParamsJS}
+                suggestedParams: {...txnParams}
             });
 
             // Use the AlgoSigner encoding library to make the transactions base64
-            let txn_b64 = AlgoSigner.encoding.msgpackToBase64(txn.toByte());
+            let b64EncodedTxn = AlgoSigner.encoding.msgpackToBase64(txn.toByte());
 
-            AlgoSigner.signTxn([{txn: txn_b64}])
+            AlgoSigner.signTxn([{txn: b64EncodedTxn}])
             .then(d => {
                 signedTxs = d;
                 signCodeElem.innerHTML = JSON.stringify(d, null, 2);
@@ -429,7 +437,7 @@ let txn_b64 = <b>algorand</b>.encoding.msgpackToBase64(txn.toByte());
         document.getElementById('algorand-sign').addEventListener('click', async () => {
             let signCodeElem = document.getElementById('sign-code');
 
-            if (!algodClient || !txParamsJS) {
+            if (!algodClient || !txnParams) {
                 signCodeElem.innerHTML = 'Setup SDK and retrieve parameters before signing.';
                 return;
             }    
@@ -445,13 +453,13 @@ let txn_b64 = <b>algorand</b>.encoding.msgpackToBase64(txn.toByte());
                 to: document.getElementById('to').value,
                 amount: +document.getElementById('amount').value,
                 note: algorand.encoding.stringToByteArray(document.getElementById('note').value),
-                suggestedParams: {...txParamsJS}
+                suggestedParams: {...txnParams}
             });
 
             // Use the AlgoSigner encoding library to make the transactions base64
-            let txn_b64 = algorand.encoding.msgpackToBase64(txn.toByte());
+            let b64EncodedTxn = algorand.encoding.msgpackToBase64(txn.toByte());
 
-            algorand.signTxns([{txn: txn_b64}])
+            algorand.signTxns([{txn: b64EncodedTxn}])
             .then(d => {
                 signedTxs = d;
                 signCodeElem.innerHTML = JSON.stringify(d, null, 2);
@@ -498,6 +506,6 @@ let txn_b64 = <b>algorand</b>.encoding.msgpackToBase64(txn.toByte());
             .finally(() => hljs.highlightBlock(sendCodeElem));
         });
     </script>
-    <script src="https://unpkg.com/algosdk@latest"></script>
+    <script src="https://unpkg.com/algosdk@1.24.0"></script>
 </body>
 </html>
