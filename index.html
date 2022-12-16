@@ -18,10 +18,10 @@
 
     <div class="navbar-menu">
       <div class="navbar-start">
-        <a class="navbar-item" href="payment.html">Payment Tx</a>
-        <a class="navbar-item" href="asset-create.html">Asset Create Tx</a>
-        <a class="navbar-item" href="asset-optin.html">Asset Opt-in Tx</a>
-        <a class="navbar-item" href="v1v2TransitionGuide.html">V1-V2 Transition Guide</a>
+        <a class="navbar-item" href="payment.html">Payment Txn</a>
+        <a class="navbar-item" href="asset-create.html">Asset Create Txn</a>
+        <a class="navbar-item" href="asset-optin.html">Asset Opt-in Txn</a>
+        <a class="navbar-item" href="arcTransitionGuide.html">ARC Transition Guide</a>
       </div>
 
       <div class="navbar-end">
@@ -32,12 +32,11 @@
     </div>
   </nav>
 
-
   <!-- CHECK -->
   <section class="section">
     <div class="container">
       <h1 class="title">
-        Check AlgoSigner
+        AlgoSigner API Availability
         <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#L251">
           <span class="icon is-small">
             <i class="fab fa-github"></i>
@@ -46,31 +45,80 @@
         </a>
       </h1>
       <p class="subtitle">
-        Check if AlgoSigner library is available
+        Check for the AlgoSigner API to be available in the browser context
       </p>
 
       <div class="columns">
         <div class="column">
-          <button class="button is-primary is-fullwidth" id="check">Check</button>
-          <pre class="mt-2"><code class="JSON" id="check-code">response</code></pre>
+          <pre><code class="js">
+if (typeof <b>algorand</b> !== 'undefined') {
+  console.log('AlgoSigner is installed.');
+} else {
+  console.log('AlgoSigner is NOT installed.');
+};
+          </code></pre>
+          <button class="button is-primary is-fullwidth" id="check">Run code</button>
         </div>
         <div class="column">
-<pre><code class="js">if (typeof <b>AlgoSigner</b> !== 'undefined') {
-  document.getElementById('check-code').innerHTML = 'AlgoSigner is installed.';
-} else {
-  document.getElementById('check-code').innerHTML = 'AlgoSigner is NOT installed.';
-};</code></pre>
+          <pre><code class="JSON" id="check-code">code snippet output</code></pre>
         </div>
       </div>
     </div>
   </section>
   <!-- /CHECK -->
 
-  <!-- CONNECT -->
+  <!-- SDKSETUP -->
   <section class="section">
     <div class="container">
       <h1 class="title">
-        Connect
+        Clients Setup & Usage
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer"
+          href="https://github.com/PureStake/algosigner-dapp-example/blob/master/payment.html#L320">
+          <span class="icon is-small">
+            <i class="fab fa-github"></i>
+          </span>
+          <span>See code on GitHub</span>
+        </a>
+      </h1>
+      <p class="subtitle">
+        Setup Algod and Indexer clients and fetch transactions parameters
+      </p>
+
+      <div class="columns">
+        <div class="column">
+          <pre><code class="js">
+const algodServer = 'https://testnet-algorand.api.purestake.io/ps2';
+const indexerServer = 'https://testnet-algorand.api.purestake.io/idx2';
+const token = { 'X-API-Key': 'YOUR API KEY HERE' };
+const port = '';
+
+algodClient = new algosdk.Algodv2(token, algodServer, port);
+indexerClient = new algosdk.Indexer(token, indexerServer, port);
+
+algodClient.getTransactionParams().do()
+.then(d => {
+  console.log(d);
+  txnParams = d;
+})
+.catch(e => { 
+  console.error(e); 
+});
+          </code></pre>
+          <button class="button is-primary is-fullwidth" id="sdksetup">Run code</button>
+        </div>
+        <div class="column">
+          <pre><code class="JSON" id="sdk-setup">code snippet output</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /SDKSETUP -->
+
+  <!-- ENABLE -->
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        Enable account discovery
         <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#L261">
           <span class="icon is-small">
             <i class="fab fa-github"></i>
@@ -79,147 +127,30 @@
         </a>
       </h1>
       <p class="subtitle">
-        Connect to AlgoSigner
+        Request from the user which accounts will be shared with the dApp
       </p>
 
       <div class="columns">
         <div class="column">
-          <button class="button is-primary is-fullwidth" id="connect">Connect</button>
-          <pre class="mt-2"><code class="JSON" id="connect-code">response</code></pre>
-        </div>
-        <div class="column">
-<pre><code class="js"><b>AlgoSigner</b>.connect()
+          <pre><code class="js">
+<b>algorand</b>.enable({ genesisID: txnParams.genesisID })
 .then((d) => {
-  document.getElementById('connect-code').innerHTML = JSON.stringify(d);
+  console.log(d);
+  sharedAccounts = d.accounts;
 })
 .catch((e) => {
   console.error(e);
-  document.getElementById('connect-code').innerHTML = JSON.stringify(e);
-});</code></pre>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- /CONNECT -->
-
-  <!-- SDKSETUP -->
-  <section class="section">
-  <div class="container">
-    <h1 class="title">
-      SDK Setup
-      <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer"
-        href="https://github.com/PureStake/algosigner-dapp-example/blob/master/payment.html#L320">
-        <span class="icon is-small">
-          <i class="fab fa-github"></i>
-        </span>
-        <span>See code on GitHub</span>
-      </a>
-    </h1>
-    <p class="subtitle">
-      Setup client for algosdk
-    </p>
-
-    <div class="columns">
-      <div class="column">
-        <button class="button is-primary is-fullwidth" id="sdksetup">Setup SDK</button>
-        <pre class="mt-2"><code class="JSON" id="sdk-setup">response</code></pre>
-      </div>
-      <div class="column">
-        <pre><code class="js">const algodServer = 'https://testnet-algorand.api.purestake.io/ps2'
-const indexerServer = 'https://testnet-algorand.api.purestake.io/idx2'
-const token = { 'X-API-Key': 'YOUR API KEY HERE' }
-const port = '';
-
-algodClient = new algosdk.Algodv2(token, algodServer, port);
-indexerClient = new algosdk.Indexer(token, indexerServer, port);
-
-algodClient.healthCheck().do()
-.then(d => { 
-  ... 
-})
-.catch(e => { 
-  console.error(e); 
 });
-</code></pre>
+          </code></pre>
+          <button class="button is-primary is-fullwidth" id="enable">Run code</button>
+        </div>
+        <div class="column">
+          <pre><code class="JSON" id="enable-code">code snippet output</code></pre>
         </div>
       </div>
     </div>
   </section>
-  <!-- /SDKSETUP -->
-
-  <!-- ACCOUNTS -->
-  <section class="section">
-    <div class="container">
-      <h1 class="title">
-        Get TestNet Accounts
-        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#L277">
-          <span class="icon is-small">
-            <i class="fab fa-github"></i>
-          </span>
-          <span>See code on GitHub</span>
-        </a>
-      </h1>
-      <p class="subtitle">
-        Gets the users TestNet accounts
-      </p>
-
-      <div class="columns">
-        <div class="column">
-          <button class="button is-primary is-fullwidth" id="accounts">Get Accounts</button>
-          <pre class="mt-2"><code id="accounts-code">response</code></pre>
-        </div>
-        <div class="column">
-<pre><code class="js"><b>AlgoSigner</b>.accounts({
-  ledger: 'TestNet'
-})
-.then((d) => {
-  document.getElementById('accounts-code').innerHTML = JSON.stringify(d);
-})
-.catch((e) => {
-  console.error(e);
-  document.getElementById('accounts-code').innerHTML = JSON.stringify(e);
-});</code></pre>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- /ACCOUNTS -->
-
-  <!-- STATUS -->
-  <section class="section">
-    <div class="container">
-      <h1 class="title">
-        Status
-        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#L296">
-          <span class="icon is-small">
-            <i class="fab fa-github"></i>
-          </span>
-          <span>See code on GitHub</span>
-        </a>
-      </h1>
-      <p class="subtitle">
-        Query AlgoD to get TestNet status
-      </p>
-
-      <div class="columns">
-        <div class="column">
-          <button class="button is-primary is-fullwidth" id="status">Status</button>
-          <pre class="mt-2"><code class="JSON" id="status-code">response</code></pre>
-        </div>
-        <div class="column">
-<pre><code class="js">algodClient.status.do()
-.then((d) => {
-  document.getElementById('status-code').innerHTML = JSON.stringify(d);
-})
-.catch((e) => {
-  console.error(e);
-  document.getElementById('status-code').innerHTML = JSON.stringify(e);
-});</code></pre>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- /STATUS -->
+  <!-- /ENABLE -->
 
   <!-- ASSETS -->
   <section class="section">
@@ -234,10 +165,25 @@ algodClient.healthCheck().do()
         </a>
       </h1>
       <p class="subtitle">
-        Query Indexer to get TestNet assets
+        Query Indexer with the client to fetch TestNet assets
       </p>
 
       <div class="columns">
+        <div class="column">
+          <pre><code class="js">
+const name = document.getElementById('name').value;
+const limit = document.getElementById('limit').value;
+
+indexerClient.searchForAssets().limit(limit).name(name).do()
+.then((d) => {
+  console.log(d);
+})
+.catch((e) => {
+  console.error(e);
+});
+          </code></pre>
+          <button class="button is-primary is-fullwidth" id="assets">Run code</button>
+        </div>
         <div class="column">
           <div class="field">
             <p class="control has-icons-left">
@@ -249,30 +195,13 @@ algodClient.healthCheck().do()
           </div>
           <div class="field">
             <p class="control has-icons-left">
-              <input class="input" id="limit" placeholder="Limit">
+              <input class="input" id="limit" type="number" placeholder="Limit">
               <span class="icon is-small is-left">
                 <i class="fas fa-list"></i>
               </span>
             </p>
           </div>
-          <button class="button is-primary is-fullwidth" id="assets">Assets</button>
-          <pre class="mt-2"><code class="JSON" id="assets-code">response</code></pre>
-        </div>
-        <div class="column">
-<pre><code class="js">const name = document.getElementById('name').value;
-const limit = document.getElementById('limit').value;
-
-indexerClient.searchForAssets()
-.limit(limit)
-.name(name)
-.do()
-.then((d) => {
-  document.getElementById('assets-code').innerHTML = JSON.stringify(d);
-})
-.catch((e) => {
-  console.error(e);
-  document.getElementById('assets-code').innerHTML = JSON.stringify(e);
-});</code></pre>
+          <pre><code class="JSON" id="assets-code">code snippet output</code></pre>
         </div>
       </div>
     </div>
@@ -290,60 +219,49 @@ indexerClient.searchForAssets()
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   <script>
     hljs.initHighlightingOnLoad();
-    let txParamsJS = {};
-    let algodClient = {};
-    let indexerClient = {};
-
-    // Helper used with JSON.stringify that replaces Uint8Array data with ascii text for display
-    function toJsonReplace(key, value) {    
-        // Return value immediately if null or undefined
-        if(value === undefined || value === null){
-            return value;
-        }
-
-        // Check for uint8 arrays to get buffer for print
-        if(value instanceof Uint8Array || (typeof(value)==='object' && value instanceof Array && value.length > 0 && typeof(value[0]) === 'number')){
-            // We have a key that is an address type then use the sdk base 58 method, otherwise use base64
-            const addressKeys = ['rcv','snd','to','from','manager','reserve','freeze','clawback','c','f','r','m','asnd','arcv','aclose','fadd'];
-            if(key && addressKeys.includes(key)) {
-                return algosdk.encodeAddress(value);
-            }
-            return btoa(value);
-        }
-
-        // Check for literal string match on object type to cycle further into the recursive replace
-        if(typeof(value) === '[object Object]'){
-            return JSON.stringify(value,_toJsonReplace,2);
-        } 
-
-        // Return without modification
-        return value;
-    }
+    let algodClient;
+    let indexerClient;
+    let txnParams;
+    let sharedAccounts;
 
     function check() {
       let checkCodeElem = document.getElementById('check-code');
 
-      if (typeof AlgoSigner !== 'undefined') {
+      if (typeof algorand !== 'undefined') {
         checkCodeElem.innerHTML = 'AlgoSigner is installed.';
       } else {
         checkCodeElem.innerHTML = 'AlgoSigner is NOT installed.';
       }
     }
 
-    function connect() {
-      let connectCodeElem = document.getElementById('connect-code');
+    function enable() {
+      let enableCodeElem = document.getElementById('enable-code');
 
-      AlgoSigner.connect()
-      .then((d) => {
-        connectCodeElem.innerHTML = JSON.stringify(d, null, 2);
-      })
-      .catch((e) => {
-        console.error(e);
-        connectCodeElem.innerHTML = JSON.stringify(e, null, 2);
-      })
-      .finally(() => {
-        hljs.highlightBlock(connectCodeElem);
-      });
+      if (txnParams === undefined) {
+        enableCodeElem.innerHTML = 'Please run the client setup code first.';
+      } else {
+        algorand.enable({ genesisID: txnParams.genesisID })
+        .then((d) => {
+          enableCodeElem.innerHTML = JSON.stringify(d, null, 2);
+          sharedAccounts = d.accounts;
+          // Append accounts to account select
+          let select = document.getElementById('from');
+          select.textContent = '';
+          for (const address of sharedAccounts) {
+            let option = document.createElement('option');
+            option.text = address;
+            option.value = address;
+            select.appendChild(option);
+          }
+        })
+        .catch((e) => {
+          console.error(e);
+          enableCodeElem.innerHTML = JSON.stringify(e, null, 2);
+        })
+        .finally(() => {
+          hljs.highlightBlock(enableCodeElem);
+        });
+      }
     }
 
     function sdkSetup() {
@@ -357,79 +275,51 @@ indexerClient.searchForAssets()
       algodClient = new algosdk.Algodv2(token, algodServer, port);
       indexerClient = new algosdk.Indexer(token, indexerServer, port);
 
-      // Health check
-      algodClient.healthCheck().do()
-      .then(d => { sdkSetupCodeElem.innerHTML = JSON.stringify(d, null, 2); })
+      // Fetch params
+      algodClient.getTransactionParams().do()
+      .then(d => {
+        txnParams = d;
+        sdkSetupCodeElem.innerHTML = JSON.stringify(d, null, 2);
+      })
       .catch(e => { sdkSetupCodeElem.innerHTML = JSON.stringify(e, null, 2); })
       .finally(() => {
         hljs.highlightBlock(sdkSetupCodeElem);
       });      
     }
     
-    function accounts(){
-      let accountsCodeElem = document.getElementById('accounts-code');
-
-      AlgoSigner.accounts({
-        ledger: 'TestNet'
-      })
-      .then((d) => {
-        accounts = d;
-        accountsCodeElem.innerHTML = JSON.stringify(d, null, 2);
-      })
-      .catch((e) => {
-        console.error(e);
-        accountsCodeElem.innerHTML = JSON.stringify(d, null, 2);
-      })
-      .finally(() => {
-        hljs.highlightBlock(accountsCodeElem);
-      });
-    }
-
-    function status(){
-      let statusCodeElem = document.getElementById('status-code');
-
-      algodClient.status().do()
-      .then((d) => {
-        statusCodeElem.innerHTML = JSON.stringify(d, null, 2);
-      })
-      .catch((e) => {
-        console.error(e);
-        statusCodeElem.innerHTML = JSON.stringify(e, null, 2);
-      })
-      .finally(() => {
-        hljs.highlightBlock(statusCodeElem);
-      });
-    }
-
     function assets(){
       let assetsCodeElem = document.getElementById('assets-code');
 
       const name = document.getElementById('name').value;
       const limit = document.getElementById('limit').value;
 
-      indexerClient.searchForAssets()
-      .limit(limit)
-      .name(name)
-      .do()
-      .then((d) => {
-        assetsCodeElem.innerHTML = JSON.stringify(d, null, 2);
-      })
-      .catch((e) => {
-        console.error(e);
-        assetsCodeElem.innerHTML = JSON.stringify(e, null, 2);
-      })
-      .finally(() => {
-        hljs.highlightBlock(assetsCodeElem);
-      });
+      if (indexerClient === undefined) {
+        assetsCodeElem.innerHTML = 'Please run the client setup code first.';
+      } else if (!name || !limit) {
+        assetsCodeElem.innerHTML = 'Please fill the "name" and "limit" fields.';
+      } else {
+        indexerClient.searchForAssets()
+        .limit(limit)
+        .name(name)
+        .do()
+        .then((d) => {
+          assetsCodeElem.innerHTML = JSON.stringify(d, null, 2);
+        })
+        .catch((e) => {
+          console.error(e);
+          assetsCodeElem.innerHTML = JSON.stringify(e, null, 2);
+        })
+        .finally(() => {
+          hljs.highlightBlock(assetsCodeElem);
+        });
+      }
     }
     
     document.getElementById('check').addEventListener('click', check);
-    document.getElementById('connect').addEventListener('click', connect);
+    document.getElementById('enable').addEventListener('click', enable);
     document.getElementById('sdksetup').addEventListener('click', sdkSetup);
-    document.getElementById('accounts').addEventListener('click', accounts);
-    document.getElementById('status').addEventListener('click', status);
     document.getElementById('assets').addEventListener('click', assets);
   </script>
-  <script src="https://unpkg.com/algosdk@latest"></script>
+  <script src="https://unpkg.com/algosdk@1.24.0"></script>
   </body>
 </html>
