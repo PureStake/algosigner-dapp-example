@@ -73,7 +73,7 @@ if (typeof <b>algorand</b> !== 'undefined') {
       <h1 class="title">
         Clients Setup & Usage
         <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer"
-          href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#L267-L288">
+          href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#L257-L278">
           <span class="icon is-small">
             <i class="fab fa-github"></i>
           </span>
@@ -119,7 +119,7 @@ algodClient.getTransactionParams().do()
     <div class="container">
       <h1 class="title">
         Enable account discovery
-        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#L237-L265">
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#L237-L255">
           <span class="icon is-small">
             <i class="fab fa-github"></i>
           </span>
@@ -157,7 +157,7 @@ algodClient.getTransactionParams().do()
     <div class="container">
       <h1 class="title">
         Get Assets from Indexer
-        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#L290-L316">
+        <a class="button is-small is-pulled-right" target="_blank" rel="noopener noreferrer" href="https://github.com/PureStake/algosigner-dapp-example/blob/master/index.html#L280-L306">
           <span class="icon is-small">
             <i class="fab fa-github"></i>
           </span>
@@ -243,16 +243,6 @@ indexerClient.searchForAssets().limit(limit).name(name).do()
         algorand.enable({ genesisID: txnParams.genesisID })
         .then((d) => {
           enableCodeElem.innerHTML = JSON.stringify(d, null, 2);
-          sharedAccounts = d.accounts;
-          // Append accounts to account select
-          let select = document.getElementById('from');
-          select.textContent = '';
-          for (const address of sharedAccounts) {
-            let option = document.createElement('option');
-            option.text = address;
-            option.value = address;
-            select.appendChild(option);
-          }
         })
         .catch((e) => {
           console.error(e);
